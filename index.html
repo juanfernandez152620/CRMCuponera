@@ -36,14 +36,16 @@ body {
   display: flex;
   justify-content: center;
 }
-body::before, body::after {
-  content: '';
-  position: fixed;
-  top: 0; bottom: 0; width: 120px;
-  pointer-events: none; z-index: 1000;
+@media (min-width: 520px) {
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    top: 0; bottom: 0; width: 120px;
+    pointer-events: none; z-index: 1000;
+  }
+  body::before { left: 0; background: linear-gradient(to right, rgba(248,235,228,0.7), transparent); }
+  body::after  { right: 0; background: linear-gradient(to left, rgba(248,235,228,0.7), transparent); }
 }
-body::before { left: 0; background: linear-gradient(to right, rgba(248,235,228,0.7), transparent); }
-body::after  { right: 0; background: linear-gradient(to left, rgba(248,235,228,0.7), transparent); }
 
 #app {
   width: 100%;
@@ -86,7 +88,7 @@ body::after  { right: 0; background: linear-gradient(to left, rgba(248,235,228,0
 }
 .nav-tab.active { color: var(--pink-deep); border-bottom-color: var(--pink-deep); }
 
-.page { display: none; flex: 1; flex-direction: column; padding-bottom: 80px; }
+.page { display: none; flex: 1; flex-direction: column; padding-bottom: 100px; }
 .page.active { display: flex; }
 
 .toolbar {
@@ -159,28 +161,42 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 .date-label { font-size: 0.68rem; color: var(--text-soft); }
 .date-val { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
 
+/* FAB — mobile-first: pegados a los bordes del viewport, dentro del contenedor en desktop */
 .fab {
-  position: fixed; bottom: 24px; right: calc(50% - 220px);
+  position: fixed;
+  bottom: 24px;
   width: 54px; height: 54px; border-radius: 50%;
   background: linear-gradient(135deg, var(--pink-deep), #c86068);
   border: none; cursor: pointer; color: white;
   box-shadow: 0 4px 20px rgba(212,120,106,0.45);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.4rem; transition: all 0.2s; z-index: 50;
+  /* Mobile: right edge with 16px margin */
+  right: 16px;
 }
 .fab:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(212,120,106,0.55); }
+
 .fab-wa {
-  right: calc(50% - 220px);
   width: auto; padding: 0 18px; border-radius: 28px;
   background: linear-gradient(135deg, var(--green-wa), var(--green-wa-dark));
   box-shadow: 0 4px 20px rgba(37,211,102,0.35);
   font-size: 0.88rem; font-weight: 600; gap: 8px;
   white-space: nowrap;
+  /* Mobile: left edge with 16px margin */
+  left: 16px;
+  right: auto;
 }
 .fab-wa:hover { box-shadow: 0 6px 24px rgba(37,211,102,0.5); }
+
+/* Desktop: anchor to the app container edges */
 @media (min-width: 520px) {
-  .fab { right: calc(50% - var(--max-w)/2 + 16px); }
-  .fab-wa { right: auto; left: calc(50% - var(--max-w)/2 + 16px); }
+  .fab {
+    right: calc(50% - var(--max-w)/2 + 16px);
+  }
+  .fab-wa {
+    left: calc(50% - var(--max-w)/2 + 16px);
+    right: auto;
+  }
 }
 
 .modal-overlay {
@@ -275,7 +291,6 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 .cupon-header-btns { display: flex; gap: 10px; padding: 16px; }
 .cupon-search-bar { padding: 0 16px 10px; }
 
-/* Cupon card with checkbox support */
 .cupon-card-wrap { position: relative; }
 .cupon-cb { display: none; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; cursor: pointer; z-index: 2; accent-color: var(--pink-deep); }
 .bulk-mode .cupon-cb { display: block; }
@@ -295,7 +310,6 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 .cupon-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 .cupon-client-actions { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
 
-/* Bulk action bar */
 .bulk-action-bar {
   position: sticky; top: 0; z-index: 10;
   background: var(--text); color: white;
@@ -309,12 +323,10 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 .btn-bulk-delete { background: #dc2626; color: white; padding: 7px 12px; border-radius: var(--radius-sm); border: none; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
 .btn-bulk-cancel { background: rgba(255,255,255,0.15); color: white; padding: 7px 12px; border-radius: var(--radius-sm); border: none; font-size: 0.78rem; cursor: pointer; }
 
-/* Cupon mode toggle */
 .cupon-mode-bar { padding: 10px 16px 0; display: flex; gap: 8px; }
 .mode-btn { padding: 6px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; border: 1.5px solid var(--border); background: var(--white); cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
 .mode-btn.active { background: var(--blush); border-color: var(--pink); color: var(--pink-deep); }
 
-/* Template */
 .template-banner {
   background: linear-gradient(135deg, var(--blush), var(--pink-light));
   padding: 14px 16px; display: flex; align-items: center; gap: 12px;
@@ -347,6 +359,10 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--pink-deep); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 30px auto; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+.btn-loading { position: relative; pointer-events: none; }
+.btn-loading::after { content: ''; display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 7px; vertical-align: middle; }
+
 .radio-group { display: flex; gap: 10px; }
 .radio-label { flex: 1; padding: 9px 12px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); cursor: pointer; display: flex; align-items: center; gap: 7px; font-size: 0.85rem; font-weight: 500; transition: all 0.15s; }
 .radio-label input { display: none; }
@@ -366,21 +382,25 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--pink-light); border-radius: 4px; }
 
+/* DATE RANGE FILTERS */
 .date-filter-row { display: flex; flex-direction: column; gap: 6px; }
 .date-filter-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); }
+.date-range-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.date-range-input-group { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 120px; }
+.date-range-input-group label { font-size: 0.68rem; color: var(--text-soft); font-weight: 600; }
 .date-btn-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .date-btn { padding: 5px 10px; border-radius: 16px; font-size: 0.75rem; font-weight: 500; border: 1.5px solid var(--border); background: var(--white); cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
 .date-btn.active { background: var(--blush); border-color: var(--pink); color: var(--pink-deep); }
 .date-clear-btn { padding: 5px 10px; border-radius: 16px; font-size: 0.75rem; font-weight: 500; border: 1.5px solid #fecaca; background: #fef2f2; cursor: pointer; color: #dc2626; transition: all 0.15s; display: none; }
 .date-clear-btn.visible { display: inline-block; }
 
-/* Error modal */
+/* ERROR MODAL */
 .error-modal-body { padding: 20px; text-align: center; }
 .error-icon { font-size: 2.5rem; margin-bottom: 10px; }
 .error-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: #dc2626; }
 .error-msg { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; }
 
-/* Custom variable builder */
+/* CUSTOM VARIABLE BUILDER */
 .custom-var-container { border: 1.5px solid var(--border-strong); border-radius: var(--radius-sm); padding: 12px; background: var(--cream); }
 .custom-var-name-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
 .custom-var-name-label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
@@ -395,8 +415,37 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 .add-var-btn { padding: 7px 14px; border-radius: var(--radius-sm); border: 1.5px dashed var(--border-strong); background: none; cursor: pointer; color: var(--text-muted); font-size: 0.82rem; display: flex; align-items: center; gap: 6px; transition: all 0.15s; }
 .add-var-btn:hover { border-color: var(--pink); color: var(--pink-deep); }
 
-/* Cupon edit form inline */
-.cupon-edit-form { background: var(--blush); border-radius: var(--radius-sm); padding: 10px; margin-top: 6px; display: flex; flex-direction: column; gap: 8px; }
+/* POOL PICKER */
+.pool-picker-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--radius-sm); cursor: pointer; transition: background 0.1s; }
+.pool-picker-item:hover { background: var(--blush); }
+.pool-picker-item input[type=checkbox] { accent-color: var(--pink-deep); width: 16px; height: 16px; flex-shrink: 0; }
+.pool-picker-item .pi-code { font-family: monospace; font-size: 0.85rem; font-weight: 700; color: var(--text); }
+.pool-picker-item .pi-status { font-size: 0.7rem; padding: 2px 6px; border-radius: 8px; background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
+/* LOADING SCREEN (WA send) */
+.loading-screen {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(58,42,40,0.55); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.loading-screen.visible { opacity: 1; pointer-events: all; }
+.loading-card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 32px 28px; max-width: 300px; width: 90%;
+  text-align: center; box-shadow: 0 8px 40px rgba(58,42,40,0.25);
+}
+.loading-throbber {
+  width: 48px; height: 48px; margin: 0 auto 20px;
+  border: 4px solid var(--border);
+  border-top-color: var(--pink-deep);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+.loading-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.loading-step { font-size: 0.82rem; color: var(--text-muted); min-height: 20px; transition: opacity 0.3s; }
+
+/* SHOW-ALL toggle */
+.tv-sent-badge { background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; border-radius: 10px; font-size: 0.7rem; font-weight: 600; padding: 2px 7px; margin-left: 6px; }
 </style>
 </head>
 <body>
@@ -433,24 +482,46 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
         <button class="filter-chip" id="chip-date-compra" onclick="toggleDateFilter('compra')">Última compra</button>
         <button class="filter-chip" id="chip-date-contacto" onclick="toggleDateFilter('contacto')">Último contacto</button>
       </div>
+
+      <!-- DATE RANGE: Última compra -->
       <div id="date-filter-compra" class="date-filter-row" style="display:none">
-        <div class="date-filter-label">Última compra hace más de:</div>
+        <div class="date-filter-label">Filtro por rango — Última compra:</div>
         <div class="date-btn-group">
-          <button class="date-btn" onclick="setDateFilter('compra',7,this)">1 semana</button>
-          <button class="date-btn" onclick="setDateFilter('compra',30,this)">1 mes</button>
-          <button class="date-btn" onclick="setDateFilter('compra',90,this)">3 meses</button>
-          <input type="date" class="form-input" id="date-custom-compra" style="padding:5px 8px;font-size:0.78rem;border-radius:16px" onchange="setDateFilter('compra',null,null,this.value)">
-          <button class="date-clear-btn" id="date-clear-compra" onclick="clearDateFilter('compra')">✕ Limpiar</button>
+          <button class="date-btn" onclick="setDatePreset('compra',7,this)">Últ. semana</button>
+          <button class="date-btn" onclick="setDatePreset('compra',30,this)">Últ. mes</button>
+          <button class="date-btn" onclick="setDatePreset('compra',90,this)">Últ. 3 meses</button>
+        </div>
+        <div class="date-range-row">
+          <div class="date-range-input-group">
+            <label>Desde</label>
+            <input type="date" class="form-input" id="date-from-compra" style="padding:5px 8px;font-size:0.78rem" onchange="applyDateRange('compra')">
+          </div>
+          <div class="date-range-input-group">
+            <label>Hasta</label>
+            <input type="date" class="form-input" id="date-to-compra" style="padding:5px 8px;font-size:0.78rem" onchange="applyDateRange('compra')">
+          </div>
+          <button class="date-clear-btn visible" onclick="clearDateFilter('compra')">✕ Limpiar</button>
         </div>
       </div>
+
+      <!-- DATE RANGE: Último contacto -->
       <div id="date-filter-contacto" class="date-filter-row" style="display:none">
-        <div class="date-filter-label">Último contacto hace más de:</div>
+        <div class="date-filter-label">Filtro por rango — Último contacto:</div>
         <div class="date-btn-group">
-          <button class="date-btn" onclick="setDateFilter('contacto',7,this)">1 semana</button>
-          <button class="date-btn" onclick="setDateFilter('contacto',30,this)">1 mes</button>
-          <button class="date-btn" onclick="setDateFilter('contacto',90,this)">3 meses</button>
-          <input type="date" class="form-input" id="date-custom-contacto" style="padding:5px 8px;font-size:0.78rem;border-radius:16px" onchange="setDateFilter('contacto',null,null,this.value)">
-          <button class="date-clear-btn" id="date-clear-contacto" onclick="clearDateFilter('contacto')">✕ Limpiar</button>
+          <button class="date-btn" onclick="setDatePreset('contacto',7,this)">Últ. semana</button>
+          <button class="date-btn" onclick="setDatePreset('contacto',30,this)">Últ. mes</button>
+          <button class="date-btn" onclick="setDatePreset('contacto',90,this)">Últ. 3 meses</button>
+        </div>
+        <div class="date-range-row">
+          <div class="date-range-input-group">
+            <label>Desde</label>
+            <input type="date" class="form-input" id="date-from-contacto" style="padding:5px 8px;font-size:0.78rem" onchange="applyDateRange('contacto')">
+          </div>
+          <div class="date-range-input-group">
+            <label>Hasta</label>
+            <input type="date" class="form-input" id="date-to-contacto" style="padding:5px 8px;font-size:0.78rem" onchange="applyDateRange('contacto')">
+          </div>
+          <button class="date-clear-btn visible" onclick="clearDateFilter('contacto')">✕ Limpiar</button>
         </div>
       </div>
     </div>
@@ -488,7 +559,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
       <div class="cupon-search-bar" style="padding-top:10px">
         <div class="search-input-wrap">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input class="search-input" id="cupon-search" placeholder="Buscar código de cupón..." oninput="filterCupones()">
+          <input class="search-input" id="cupon-search" placeholder="Buscar código o cliente..." oninput="filterCupones()">
         </div>
       </div>
       <div class="list-container" id="cupon-list" style="padding-top:0"><div class="spinner"></div></div>
@@ -525,8 +596,9 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
           </select>
         </div>
       </div>
-      <div style="padding:8px 16px 4px;font-size:0.75rem;color:var(--text-muted)">
-        Clientes no contactados hoy — hacé click para abrir WhatsApp
+      <div style="padding:8px 16px 4px;font-size:0.75rem;color:var(--text-muted);display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <span id="tv-filter-label">Clientes no contactados hoy — hacé click para abrir WhatsApp</span>
+        <button class="btn btn-secondary btn-sm" id="btn-show-all" onclick="toggleShowAll()" style="white-space:nowrap;font-size:0.72rem;padding:5px 10px">Mostrar todos</button>
       </div>
       <div id="tv-pool-info" style="padding:0 16px 8px;display:none">
         <div class="pool-indicator"><div class="pool-dot"></div><span id="tv-pool-text"></span></div>
@@ -538,6 +610,15 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
       <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M13 0C5.373 0 0 5.373 0 12c0 2.122.558 4.112 1.528 5.836L0 24l6.336-1.656A11.94 11.94 0 0013 24c6.627 0 12-5.373 12-12S19.627 0 13 0zm0 22c-1.86 0-3.604-.5-5.112-1.373l-.366-.217-3.764.987.987-3.656-.236-.38A9.94 9.94 0 013 12C3 7.029 7.029 3 12 3s10 4.029 10 9-4.03 10-9 10z"/></svg>
       Plantilla de Mensajes
     </button>
+  </div>
+</div>
+
+<!-- LOADING SCREEN (WhatsApp send) -->
+<div class="loading-screen" id="wa-loading-screen">
+  <div class="loading-card">
+    <div class="loading-throbber"></div>
+    <div class="loading-title">Preparando mensaje...</div>
+    <div class="loading-step" id="wa-loading-step">Guardando contacto</div>
   </div>
 </div>
 
@@ -585,9 +666,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
       <div class="form-group">
         <label class="form-label">Teléfono <span class="req">*</span></label>
         <div class="tel-prefix-row">
-          <select class="form-select tel-prefix-select" id="nc-tel-prefix" onchange="updateTelPreview('nc')">
-            <!-- populated by JS -->
-          </select>
+          <select class="form-select tel-prefix-select" id="nc-tel-prefix" onchange="updateTelPreview('nc')"></select>
           <div class="tel-number-wrap">
             <input class="form-input" id="nc-tel-num" type="tel" placeholder="8155000000" oninput="updateTelPreview('nc')" maxlength="10">
             <div class="tel-preview" id="nc-tel-preview"></div>
@@ -597,9 +676,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
       </div>
       <div class="form-group">
         <label class="form-label">Localidad <span class="req">*</span></label>
-        <select class="form-select" id="nc-localidad">
-          <!-- populated by JS -->
-        </select>
+        <select class="form-select" id="nc-localidad"></select>
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -622,7 +699,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
         <label class="form-label">Nota de primera compra (opcional)</label>
         <textarea class="form-textarea" id="nc-nota" placeholder="Descripción de la primera compra..." style="min-height:60px"></textarea>
       </div>
-      <button class="btn btn-primary btn-full" onclick="createClient()">Guardar Cliente</button>
+      <button class="btn btn-primary btn-full" id="btn-save-client" onclick="createClient()">Guardar Cliente</button>
     </div>
   </div>
 </div>
@@ -675,7 +752,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
   <div class="modal">
     <div class="modal-header">
       <span class="modal-title">Agregar Cupones</span>
-      <button class="btn-close" onclick="closeModal('modal-add-cupons')">×</button>
+      <button class="btn-close" id="btn-close-add-cupons" onclick="closeModal('modal-add-cupons')">×</button>
     </div>
     <div class="modal-body">
       <div class="inner-tabs">
@@ -683,15 +760,19 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
         <button class="inner-tab" onclick="switchCuponTab('generate',this)">Generar</button>
         <button class="inner-tab" onclick="switchCuponTab('single',this)">Individual</button>
       </div>
+
+      <!-- BULK TAB -->
       <div id="cupon-tab-bulk" style="display:flex;flex-direction:column;gap:12px;margin-top:4px">
         <div class="form-group">
           <label class="form-label">Pegar o escribir códigos</label>
           <p style="font-size:0.76rem;color:var(--text-muted);margin-bottom:6px">Separados por coma, espacio o enter. Ej: <code>VERANO10, SALE20, VIP50</code></p>
           <div class="bulk-tags" id="bulk-tags-display"></div>
-          <input class="form-input" id="bulk-input" style="margin-top:6px" placeholder="Escribe un código y presioná Enter o coma" onkeydown="handleBulkInput(event)">
+          <input class="form-input" id="bulk-input" style="margin-top:6px" placeholder="Escribe un código y presioná Enter o coma" onkeydown="handleBulkInputKey(event)" oninput="handleBulkInputChange(event)">
         </div>
-        <button class="btn btn-primary btn-full" onclick="saveBulkCupons()">Agregar Cupones</button>
+        <button class="btn btn-primary btn-full" id="btn-save-bulk" onclick="saveBulkCupons()">Agregar Cupones</button>
       </div>
+
+      <!-- GENERATE TAB -->
       <div id="cupon-tab-generate" style="display:none;flex-direction:column;gap:12px;margin-top:4px">
         <div class="form-group">
           <label class="form-label">Prefijo</label>
@@ -703,14 +784,16 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
         </div>
         <div id="gen-preview" style="font-size:0.78rem;color:var(--text-muted);padding:8px;background:var(--cream);border-radius:var(--radius-sm);display:none"></div>
         <button class="btn btn-secondary btn-sm btn-full" onclick="previewGenerate()">Ver vista previa</button>
-        <button class="btn btn-primary btn-full" onclick="saveGeneratedCupons()">Generar y Guardar</button>
+        <button class="btn btn-primary btn-full" id="btn-save-generate" onclick="saveGeneratedCupons()">Generar y Guardar</button>
       </div>
+
+      <!-- SINGLE TAB -->
       <div id="cupon-tab-single" style="display:none;flex-direction:column;gap:12px;margin-top:4px">
         <div class="form-group">
           <label class="form-label">Código de cupón</label>
           <input class="form-input" id="single-code" placeholder="Ej: CUMPLE2025">
         </div>
-        <button class="btn btn-primary btn-full" onclick="saveSingleCupon()">Agregar Cupón</button>
+        <button class="btn btn-primary btn-full" id="btn-save-single" onclick="saveSingleCupon()">Agregar Cupón</button>
       </div>
     </div>
   </div>
@@ -726,7 +809,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
     <div class="modal-body">
       <div class="search-input-wrap">
         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input class="search-input" id="redeem-search" placeholder="Buscar código..." oninput="filterRedeemList()">
+        <input class="search-input" id="redeem-search" placeholder="Buscar por código o nombre de cliente..." oninput="filterRedeemList()">
       </div>
     </div>
     <div class="redeem-list" id="redeem-list"></div>
@@ -760,7 +843,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
       <div class="form-group">
         <label class="form-label">Mensaje</label>
         <p style="font-size:0.76rem;color:var(--text-muted);margin-bottom:6px">
-          Las variables se escriben entre <strong>&&</strong> (doble ampersand). Al enviar, cada variable es reemplazada por su valor real — o en el caso de las variables aleatorias, elige un valor distinto de forma cíclica. Tocá una chip para insertarla en el mensaje:
+          Las variables se escriben entre <strong>&&</strong>. Tocá una chip para insertarla:
         </p>
         <div class="var-chips-row" id="var-chips-row" style="margin-bottom:8px">
           <span class="var-chip" onclick="insertVar('&nombre&')">👤 &nombre&</span>
@@ -775,7 +858,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
       <div class="form-group">
         <label class="form-label">Variables aleatorias personalizadas</label>
         <p style="font-size:0.76rem;color:var(--text-muted);margin-bottom:8px">
-          Creá variables con múltiples opciones. Al enviar mensajes, la app elige cíclicamente entre las opciones (1→2→3→1→...). Ideal para saludos variados, emojis rotantes, etc.
+          Creá variables con múltiples opciones. Al enviar, la app elige cíclicamente entre las opciones.
         </p>
         <div class="custom-vars-list" id="custom-vars-list"></div>
         <button class="add-var-btn" onclick="addCustomVar()">
@@ -786,7 +869,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 
       <div class="form-group">
         <label class="form-label">Cupones para este envío</label>
-        <div class="radio-group">
+        <div class="radio-group" style="flex-wrap:wrap">
           <label class="radio-label checked" id="cupon-opt-none-lbl" onclick="selectCuponOpt('none')">
             <input type="radio" name="cupon-opt" value="none" checked>Sin cupones
           </label>
@@ -804,9 +887,14 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
         <p style="font-size:0.76rem;color:var(--text-muted);margin-top:4px">Se generará 1 cupón único por cliente.</p>
       </div>
       <div id="tmpl-cupon-pool" style="display:none" class="form-group">
-        <label class="form-label">Cupones disponibles (no canjeados)</label>
-        <div id="tmpl-pool-count" class="pool-indicator"><div class="pool-dot"></div><span>Cargando...</span></div>
-        <p style="font-size:0.76rem;color:var(--text-muted);margin-top:4px">Se asignará 1 cupón diferente por cliente en orden.</p>
+        <label class="form-label">Elegir cupones para este envío</label>
+        <p style="font-size:0.76rem;color:var(--text-muted);margin-bottom:8px">Seleccioná los cupones activos que querés usar. Se asignarán uno por cliente en orden.</p>
+        <div class="search-input-wrap" style="margin-bottom:8px">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input class="search-input" id="pool-picker-search" placeholder="Filtrar cupones..." oninput="filterPoolPicker()">
+        </div>
+        <div id="pool-picker-list" style="max-height:200px;overflow-y:auto;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--cream);padding:6px;display:flex;flex-direction:column;gap:4px"></div>
+        <div id="pool-selected-summary" style="margin-top:8px;font-size:0.78rem;color:var(--text-muted)">0 cupones seleccionados</div>
       </div>
       <button class="btn btn-primary btn-full" onclick="createTemplate()">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -822,10 +910,11 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 // ============================================================
 // CONFIG
 // ============================================================
+
 const API_URL = "https://script.google.com/macros/s/AKfycbw4RQ2Z1XmmYSxdQuQ2ecAsqqsSKVvOu6l0KcxVlVRpOe8igKgo3vv8kDIKWp57yjkV3w/exec";
 
 // ============================================================
-// TUCUMAN LOCALITIES (normalized)
+// TUCUMAN LOCALITIES
 // ============================================================
 const TUCUMAN_LOCALIDADES = [
   "Acheral","Aguilares","Alderetes","Amaicha del Valle","Arcadia",
@@ -841,26 +930,20 @@ const TUCUMAN_LOCALIDADES = [
   "Tafí Viejo","Tucumán Capital","Trancas","Villa Quinteros","Yerba Buena"
 ];
 
-// Normalize a locality string for matching
 function normalizeLoc(s) {
   if (!s) return '';
   return String(s).toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/\s+/g,' ').trim();
 }
-
-// Map any variant to canonical name
 function canonicalLoc(s) {
   const n = normalizeLoc(s);
-  // direct match
   for (const loc of TUCUMAN_LOCALIDADES) {
     if (normalizeLoc(loc) === n) return loc;
   }
-  // partial match (contains)
   for (const loc of TUCUMAN_LOCALIDADES) {
     if (normalizeLoc(loc).includes(n) || n.includes(normalizeLoc(loc))) return loc;
   }
-  // Return original if no match
   return s;
 }
 
@@ -894,24 +977,18 @@ function updateTelPreview(prefix) {
   const numEl = document.getElementById(`${prefix}-tel-num`);
   const prevEl = document.getElementById(`${prefix}-tel-preview`);
   if (!selEl || !numEl || !prevEl) return;
-
   const selOpt = selEl.options[selEl.selectedIndex];
   const prefixCode = selEl.value === 'OTRO' ? '' : selEl.value;
   const maxDigits = parseInt(selOpt.getAttribute('data-digits')) || 8;
   const num = numEl.value.replace(/\D/g,'');
-
   if (num.length > maxDigits) {
     numEl.classList.add('warn');
     prevEl.style.color = '#d97706';
-    prevEl.textContent = `⚠ El número tiene ${num.length} dígitos, se esperan ${maxDigits}. Podés continuar si es correcto.`;
+    prevEl.textContent = `⚠ El número tiene ${num.length} dígitos, se esperan ${maxDigits}.`;
   } else {
     numEl.classList.remove('warn');
     prevEl.style.color = 'var(--text-soft)';
-    if (num.length > 0) {
-      prevEl.textContent = `Número final: 549${prefixCode}${num}`;
-    } else {
-      prevEl.textContent = '';
-    }
+    prevEl.textContent = num.length > 0 ? `Número final: 549${prefixCode}${num}` : '';
   }
 }
 
@@ -937,12 +1014,27 @@ let generatedPreviewCodes = [];
 let activeCuponOpt = 'none';
 let activeTemplate = null;
 let activeTemplateClients = [];
-let customVars = []; // [{name, values: [], cycleIndex}]
+let customVars = [];
 let cuponMode = 'normal';
 let selectedCuponIds = new Set();
+let showAllTemplateClients = false;
 
-let dateFilters = { compra: null, contacto: null };
+// Selected pool cupons in template modal
+let selectedPoolCuponIds = new Set();
+
+// Date range filters
+let dateFilters = {
+  compra:   { from: null, to: null },
+  contacto: { from: null, to: null }
+};
 let activeDatePanel = { compra: false, contacto: false };
+
+// Request lock flags (prevent angry clicks)
+let isSavingClient = false;
+let isSavingBulkCupons = false;
+let isSavingGeneratedCupons = false;
+let isSavingSingleCupon = false;
+let isSendingWA = false;
 
 // ============================================================
 // API HELPERS
@@ -978,7 +1070,6 @@ async function loadClients() {
   try {
     const data = await apiGet('getClientes');
     clients = Array.isArray(data) ? data : [];
-    // Normalize localidades on load
     clients.forEach(c => {
       if (c['Localidad']) c['Localidad'] = canonicalLoc(c['Localidad']);
     });
@@ -1013,7 +1104,6 @@ function switchTab(tab) {
 // LOCALITY FILTER
 // ============================================================
 function populateLocalidadFilter() {
-  // Build set from TUCUMAN_LOCALIDADES that appear in clients
   const used = new Set(clients.map(c => canonicalLoc(c['Localidad'])).filter(Boolean));
   const locs = TUCUMAN_LOCALIDADES.filter(l => used.has(l));
   ['filter-localidad','tv-filter-localidad'].forEach(id => {
@@ -1026,30 +1116,98 @@ function populateLocalidadFilter() {
 }
 
 // ============================================================
-// CRM FILTER & RENDER
+// CRM FILTER & RENDER — DATE RANGE
 // ============================================================
 function getActiveClients() {
-  return clients.filter(c => c['activo'] !== false && c['activo'] !== 'FALSE' && c['activo'] !== false);
+  return clients.filter(c => c['activo'] !== false && c['activo'] !== 'FALSE');
+}
+
+function toggleDateFilter(type) {
+  const panelEl = document.getElementById(`date-filter-${type}`);
+  const chipEl  = document.getElementById(`chip-date-${type}`);
+  const isOpen  = activeDatePanel[type];
+  if (isOpen) {
+    activeDatePanel[type] = false;
+    panelEl.style.display = 'none';
+    chipEl.classList.remove('active');
+  } else {
+    activeDatePanel[type] = true;
+    panelEl.style.display = 'flex';
+    chipEl.classList.add('active');
+  }
+}
+
+function setDatePreset(type, days, btn) {
+  document.querySelectorAll(`#date-filter-${type} .date-btn`).forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const to   = new Date();
+  const from = new Date(); from.setDate(from.getDate() - days);
+  dateFilters[type].from = from;
+  dateFilters[type].to   = to;
+  // Update inputs
+  const pad = n => String(n).padStart(2,'0');
+  const fmt  = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const fi = document.getElementById(`date-from-${type}`);
+  const ti = document.getElementById(`date-to-${type}`);
+  if (fi) fi.value = fmt(from);
+  if (ti) ti.value = fmt(to);
+  document.getElementById(`chip-date-${type}`).classList.add('active');
+  filterClients();
+}
+
+function applyDateRange(type) {
+  const fi = document.getElementById(`date-from-${type}`);
+  const ti = document.getElementById(`date-to-${type}`);
+  dateFilters[type].from = fi && fi.value ? new Date(fi.value + 'T00:00:00') : null;
+  dateFilters[type].to   = ti && ti.value ? new Date(ti.value + 'T23:59:59') : null;
+  // Clear preset buttons
+  document.querySelectorAll(`#date-filter-${type} .date-btn`).forEach(b => b.classList.remove('active'));
+  document.getElementById(`chip-date-${type}`).classList.add('active');
+  filterClients();
+}
+
+function clearDateFilter(type) {
+  dateFilters[type] = { from: null, to: null };
+  activeDatePanel[type] = false;
+  document.getElementById(`date-filter-${type}`).style.display = 'none';
+  document.getElementById(`chip-date-${type}`).classList.remove('active');
+  document.querySelectorAll(`#date-filter-${type} .date-btn`).forEach(b => b.classList.remove('active'));
+  const fi = document.getElementById(`date-from-${type}`);
+  const ti = document.getElementById(`date-to-${type}`);
+  if (fi) fi.value = '';
+  if (ti) ti.value = '';
+  filterClients();
+}
+
+function inDateRange(val, range) {
+  if (!range.from && !range.to) return true;
+  const d = parseDate(val);
+  if (!d) return false;
+  if (range.from && d < range.from) return false;
+  if (range.to   && d > range.to)   return false;
+  return true;
 }
 
 function filterClients() {
-  const q = document.getElementById('crm-search').value.toLowerCase().trim();
+  const q    = document.getElementById('crm-search').value.toLowerCase().trim();
   const tipo = document.getElementById('filter-tipo').value;
-  const loc = document.getElementById('filter-localidad').value;
+  const loc  = document.getElementById('filter-localidad').value;
+
+  const hasDateFilter = range => range.from || range.to;
 
   let filtered = getActiveClients().filter(c => {
     const cTipo = c['Tienda_Online'] || c['Tienda / Online'] || '';
-    const cLoc = canonicalLoc(c['Localidad']);
+    const cLoc  = canonicalLoc(c['Localidad']);
     if (tipo && cTipo !== tipo) return false;
     if (loc && cLoc !== loc) return false;
-    if (dateFilters.compra) {
-      const dc = parseDate(c['Fecha_de_ultima_compra'] || c['Fecha de ultima compra']);
-      if (!dc || dc > dateFilters.compra) return false;
+
+    if (hasDateFilter(dateFilters.compra)) {
+      if (!inDateRange(c['Fecha_de_ultima_compra'] || c['Fecha de ultima compra'], dateFilters.compra)) return false;
     }
-    if (dateFilters.contacto) {
-      const dc = parseDate(c['Fecha_de_ultima_Comunicacion'] || c['Fecha de ultima Cominicacion']);
-      if (!dc || dc > dateFilters.contacto) return false;
+    if (hasDateFilter(dateFilters.contacto)) {
+      if (!inDateRange(c['Fecha_de_ultima_Comunicacion'] || c['Fecha de ultima Cominicacion'], dateFilters.contacto)) return false;
     }
+
     if (q) {
       const name = c['Nombre_apellido'] || c['Nombre / apellido'] || '';
       const hay = [name, c['Localidad'], c['Numero_de_telefono'] || c['Numero de telefono']].join(' ').toLowerCase();
@@ -1067,53 +1225,6 @@ function parseDate(val) {
   return isNaN(d) ? null : d;
 }
 
-function toggleDateFilter(type) {
-  const panelEl = document.getElementById(`date-filter-${type}`);
-  const chipEl = document.getElementById(`chip-date-${type}`);
-  const isOpen = activeDatePanel[type];
-
-  if (isOpen && !dateFilters[type]) {
-    // close panel, no filter active
-    activeDatePanel[type] = false;
-    panelEl.style.display = 'none';
-    chipEl.classList.remove('active');
-  } else if (isOpen && dateFilters[type]) {
-    // has active filter — clear it and close
-    clearDateFilter(type);
-  } else {
-    // open panel
-    activeDatePanel[type] = true;
-    panelEl.style.display = 'flex';
-    chipEl.classList.add('active');
-  }
-}
-
-function setDateFilter(type, days, btn, customDate) {
-  document.querySelectorAll(`#date-filter-${type} .date-btn`).forEach(b => b.classList.remove('active'));
-  if (days !== null && days !== undefined) {
-    if (btn) btn.classList.add('active');
-    const d = new Date(); d.setDate(d.getDate() - days);
-    dateFilters[type] = d;
-  } else if (customDate) {
-    dateFilters[type] = new Date(customDate);
-  }
-  document.getElementById(`chip-date-${type}`).classList.add('active');
-  document.getElementById(`date-clear-${type}`).classList.add('visible');
-  filterClients();
-}
-
-function clearDateFilter(type) {
-  dateFilters[type] = null;
-  activeDatePanel[type] = false;
-  document.getElementById(`date-filter-${type}`).style.display = 'none';
-  document.getElementById(`chip-date-${type}`).classList.remove('active');
-  document.getElementById(`date-clear-${type}`).classList.remove('visible');
-  document.querySelectorAll(`#date-filter-${type} .date-btn`).forEach(b => b.classList.remove('active'));
-  const customInput = document.getElementById(`date-custom-${type}`);
-  if (customInput) customInput.value = '';
-  filterClients();
-}
-
 function renderClientList(list, containerId) {
   const el = document.getElementById(containerId);
   if (!list.length) {
@@ -1126,10 +1237,10 @@ function renderClientList(list, containerId) {
 function clientCardHTML(c) {
   const name = c['Nombre_apellido'] || c['Nombre / apellido'] || 'Sin nombre';
   const initials = name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-  const loc = canonicalLoc(c['Localidad']) || '';
-  const tel = c['Numero_de_telefono'] || c['Numero de telefono'] || '';
+  const loc  = canonicalLoc(c['Localidad']) || '';
+  const tel  = c['Numero_de_telefono'] || c['Numero de telefono'] || '';
   const tipo = c['Tienda_Online'] || c['Tienda / Online'] || '';
-  const uc = formatDate(c['Fecha_de_ultima_compra'] || c['Fecha de ultima compra']);
+  const uc   = formatDate(c['Fecha_de_ultima_compra'] || c['Fecha de ultima compra']);
   const ucom = formatDate(c['Fecha_de_ultima_Comunicacion'] || c['Fecha de ultima Cominicacion']);
   const tipoClass = tipo === 'Online' ? 'online' : 'local';
   return `<div class="client-card" onclick='openClientView(${JSON.stringify(c['ID_Cliente'])})'>
@@ -1181,7 +1292,7 @@ function openClientView(id) {
   const tel = c['Numero_de_telefono'] || c['Numero de telefono'] || '';
   const loc = canonicalLoc(c['Localidad']) || '–';
   const tipo = c['Tienda_Online'] || c['Tienda / Online'] || '–';
-  const dir = c['Direccion'] || '–';
+  const dir  = c['Direccion'] || '–';
 
   document.getElementById('cv-body').innerHTML = `
     <div class="client-view-section">
@@ -1208,7 +1319,7 @@ function openClientView(id) {
       <div class="section-title">Historial (${allNotes.length})</div>
       <div class="notes-list">
         ${allNotes.length ? allNotes.map(n => {
-          const d = n['Fecha de compra'] || n['Fecha'] || '';
+          const d    = n['Fecha de compra'] || n['Fecha'] || '';
           const desc = n['Descripcion'] || n['Mensaje'] || '';
           return `<div class="note-card ${n._type}">
             <div class="note-type-badge">${n._type === 'compra' ? '🛍 Compra' : '💬 Comunicación'}</div>
@@ -1228,21 +1339,16 @@ function openClientView(id) {
 function openEditModal() {
   const c = currentClient;
   const name = c['Nombre_apellido'] || c['Nombre / apellido'] || '';
-  const tel = c['Numero_de_telefono'] || c['Numero de telefono'] || '';
-  const loc = canonicalLoc(c['Localidad']) || '';
+  const tel  = c['Numero_de_telefono'] || c['Numero de telefono'] || '';
+  const loc  = canonicalLoc(c['Localidad']) || '';
   const tipo = c['Tienda_Online'] || c['Tienda / Online'] || 'Tienda';
-  const dir = c['Direccion'] || '';
+  const dir  = c['Direccion'] || '';
 
-  // Parse phone back into prefix+number
   let detectedPrefix = '381';
   let detectedNum = tel.replace(/\D/g,'');
-  // Remove country code 549 or 54
   if (detectedNum.startsWith('549')) detectedNum = detectedNum.slice(3);
   else if (detectedNum.startsWith('54')) detectedNum = detectedNum.slice(2);
-  // Remove 0 or 15 prefix
   detectedNum = detectedNum.replace(/^0/,'').replace(/^15/,'');
-
-  // Try to match prefix
   for (const p of PHONE_PREFIXES) {
     if (p.code !== 'OTRO' && detectedNum.startsWith(p.code)) {
       detectedPrefix = p.code;
@@ -1294,19 +1400,18 @@ function openEditModal() {
 }
 
 async function saveEditClient() {
-  const c = currentClient;
+  const c     = currentClient;
   const phone = buildPhoneNumber('ec-tel-prefix', 'ec-tel-num');
-  const data = {
+  const data  = {
     id: c['ID_Cliente'],
-    'Nombre_apellido': document.getElementById('ec-nombre').value.trim(),
-    'Numero_de_telefono': phone,
-    'Localidad': document.getElementById('ec-localidad').value,
-    'Tienda_Online': document.getElementById('ec-tipo').value,
-    'Direccion': document.getElementById('ec-dir').value.trim(),
-    // Also update old-key style for compatibility
-    'Nombre / apellido': document.getElementById('ec-nombre').value.trim(),
-    'Numero de telefono': phone,
-    'Tienda / Online': document.getElementById('ec-tipo').value,
+    'Nombre_apellido':      document.getElementById('ec-nombre').value.trim(),
+    'Numero_de_telefono':   phone,
+    'Localidad':            document.getElementById('ec-localidad').value,
+    'Tienda_Online':        document.getElementById('ec-tipo').value,
+    'Direccion':            document.getElementById('ec-dir').value.trim(),
+    'Nombre / apellido':    document.getElementById('ec-nombre').value.trim(),
+    'Numero de telefono':   phone,
+    'Tienda / Online':      document.getElementById('ec-tipo').value,
   };
   try {
     await apiPost({ action: 'updateCliente', data });
@@ -1318,47 +1423,52 @@ async function saveEditClient() {
     openClientView(c['ID_Cliente']);
     populateLocalidadFilter();
     filterClients();
-  } catch(e) { showErrorModal('Error al guardar', 'No se pudo actualizar el cliente. Verifica la conexión con la API.'); }
+  } catch(e) { showErrorModal('Error al guardar', 'No se pudo actualizar el cliente.'); }
 }
 
 // ============================================================
-// NEW CLIENT
+// NEW CLIENT — with lock
 // ============================================================
 async function createClient() {
+  if (isSavingClient) return;
   const nombre = document.getElementById('nc-nombre').value.trim();
-  const loc = document.getElementById('nc-localidad').value;
+  const loc    = document.getElementById('nc-localidad').value;
   if (!nombre || !loc) { toast('Nombre y localidad son obligatorios', 'error'); return; }
 
   const phone = buildPhoneNumber('nc-tel-prefix', 'nc-tel-num');
   if (!phone || phone === '549') { toast('Ingresá el número de teléfono', 'error'); return; }
 
-  const today = new Date().toISOString().split('T')[0];
-  const nota = document.getElementById('nc-nota').value.trim();
+  isSavingClient = true;
+  const btn = document.getElementById('btn-save-client');
+  if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); btn.textContent = 'Guardando...'; }
+
+  const today       = new Date().toISOString().split('T')[0];
+  const nota        = document.getElementById('nc-nota').value.trim();
   const notasCompra = nota ? [{ Descripcion: nota, 'Fecha de compra': today }] : [];
 
   const data = {
-    'Nombre_apellido': nombre,
-    'Nombre / apellido': nombre,
-    'Numero_de_telefono': phone,
-    'Numero de telefono': phone,
-    'Localidad': loc,
-    'Tienda_Online': document.getElementById('nc-tipo').value,
-    'Tienda / Online': document.getElementById('nc-tipo').value,
-    'Fecha_de_inicio': document.getElementById('nc-fecha').value || today,
-    'Fecha de inicio': document.getElementById('nc-fecha').value || today,
-    'Direccion': document.getElementById('nc-dir').value.trim(),
-    'Notas_de_Compra': notasCompra,
-    'Notas de Compra': notasCompra,
-    'Notas_de_comunicacion': [],
-    'Notas de comunicacion': [],
-    'activo': true,
-    'Fecha_de_ultima_compra': nota ? today : '',
-    'Fecha de ultima compra': nota ? today : '',
+    'Nombre_apellido':            nombre,
+    'Nombre / apellido':          nombre,
+    'Numero_de_telefono':         phone,
+    'Numero de telefono':         phone,
+    'Localidad':                  loc,
+    'Tienda_Online':              document.getElementById('nc-tipo').value,
+    'Tienda / Online':            document.getElementById('nc-tipo').value,
+    'Fecha_de_inicio':            document.getElementById('nc-fecha').value || today,
+    'Fecha de inicio':            document.getElementById('nc-fecha').value || today,
+    'Direccion':                  document.getElementById('nc-dir').value.trim(),
+    'Notas_de_Compra':            notasCompra,
+    'Notas de Compra':            notasCompra,
+    'Notas_de_comunicacion':      [],
+    'Notas de comunicacion':      [],
+    'activo':                     true,
+    'Fecha_de_ultima_compra':     nota ? today : '',
+    'Fecha de ultima compra':     nota ? today : '',
     'Fecha_de_ultima_Comunicacion': '',
     'Fecha de ultima Cominicacion': '',
   };
   try {
-    const res = await apiPost({ action: 'createCliente', data });
+    const res  = await apiPost({ action: 'createCliente', data });
     const newC = { ...data, 'ID_Cliente': res.record?.['ID_Cliente'] || data['ID_Cliente'] };
     clients.push(newC);
     populateLocalidadFilter();
@@ -1368,7 +1478,12 @@ async function createClient() {
     ['nc-nombre','nc-dir','nc-fecha','nc-nota'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('nc-tel-num').value = '';
     updateTelPreview('nc');
-  } catch(e) { showErrorModal('Error al crear cliente', 'No se pudo crear el cliente. Verifica la conexión con la API.'); }
+  } catch(e) {
+    showErrorModal('Error al crear cliente', 'No se pudo crear el cliente. Verifica la conexión con la API.');
+  } finally {
+    isSavingClient = false;
+    if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); btn.textContent = 'Guardar Cliente'; }
+  }
 }
 
 // ============================================================
@@ -1408,7 +1523,7 @@ async function saveNote() {
   const c = clients.find(x => x['ID_Cliente'] === currentNoteClientId);
   if (!c) return;
   const fecha = document.getElementById('nn-fecha').value;
-  const desc = document.getElementById('nn-desc').value.trim();
+  const desc  = document.getElementById('nn-desc').value.trim();
   const today = new Date().toISOString().split('T')[0];
 
   let notasCompra = [];
@@ -1419,16 +1534,16 @@ async function saveNote() {
   const data = { id: c['ID_Cliente'] };
   if (noteType === 'compra') {
     notasCompra.push({ 'Fecha de compra': fecha, 'Descripcion': desc });
-    data['Notas_de_Compra'] = notasCompra;
-    data['Notas de Compra'] = notasCompra;
-    data['Fecha_de_ultima_compra'] = today;
-    data['Fecha de ultima compra'] = today;
+    data['Notas_de_Compra']           = notasCompra;
+    data['Notas de Compra']           = notasCompra;
+    data['Fecha_de_ultima_compra']    = today;
+    data['Fecha de ultima compra']    = today;
   } else {
     notasCom.push({ 'Fecha': fecha, 'Descripcion': desc });
-    data['Notas_de_comunicacion'] = notasCom;
-    data['Notas de comunicacion'] = notasCom;
-    data['Fecha_de_ultima_Comunicacion'] = today;
-    data['Fecha de ultima Cominicacion'] = today;
+    data['Notas_de_comunicacion']         = notasCom;
+    data['Notas de comunicacion']         = notasCom;
+    data['Fecha_de_ultima_Comunicacion']  = today;
+    data['Fecha de ultima Cominicacion']  = today;
   }
 
   try {
@@ -1444,15 +1559,9 @@ async function saveNote() {
 // ============================================================
 // CUPONES — helpers
 // ============================================================
-function getCuponCode(c) {
-  return c['Code'] || c['n°/codigo de cupon'] || c['Cupon_ID'] || '';
-}
-function getCuponId(c) {
-  return c['Cupon_ID'] || c['n°/codigo de cupon'] || c['Code'] || '';
-}
-function getCuponClientId(c) {
-  return c['id_cliente'] || c['cliente al que se le mando'] || '';
-}
+function getCuponCode(c) { return c['Code'] || c['n°/codigo de cupon'] || c['Cupon_ID'] || ''; }
+function getCuponId(c)   { return c['Cupon_ID'] || c['n°/codigo de cupon'] || c['Code'] || ''; }
+function getCuponClientId(c) { return c['id_cliente'] || c['cliente al que se le mando'] || ''; }
 function getCuponClientName(c) {
   if (c['nombre_cliente']) return c['nombre_cliente'];
   const cid = getCuponClientId(c);
@@ -1460,12 +1569,8 @@ function getCuponClientName(c) {
   const client = clients.find(x => x['ID_Cliente'] === cid);
   return client ? (client['Nombre_apellido'] || client['Nombre / apellido'] || cid) : cid;
 }
-function isRedeemed(c) {
-  return c['redimido'] === true || c['redimido'] === 'TRUE';
-}
-function isActive(c) {
-  return c['activo'] !== false && c['activo'] !== 'FALSE';
-}
+function isRedeemed(c) { return c['redimido'] === true || c['redimido'] === 'TRUE'; }
+function isActive(c)   { return c['activo'] !== false && c['activo'] !== 'FALSE'; }
 
 // ============================================================
 // CUPONES RENDER
@@ -1482,7 +1587,7 @@ function setCuponMode(mode) {
 }
 
 function updateBulkBar() {
-  const bar = document.getElementById('bulk-action-bar');
+  const bar   = document.getElementById('bulk-action-bar');
   const count = selectedCuponIds.size;
   if (cuponMode === 'bulk' && count > 0) {
     bar.classList.add('visible');
@@ -1496,7 +1601,6 @@ function toggleCuponSelect(cuponId) {
   if (selectedCuponIds.has(cuponId)) selectedCuponIds.delete(cuponId);
   else selectedCuponIds.add(cuponId);
   updateBulkBar();
-  // Update card visual
   const card = document.querySelector(`[data-cupon-id="${CSS.escape(cuponId)}"]`);
   if (card) card.classList.toggle('selected', selectedCuponIds.has(cuponId));
   const cb = document.querySelector(`[data-cupon-cb="${CSS.escape(cuponId)}"]`);
@@ -1507,7 +1611,12 @@ function renderCupones() { filterCupones(); }
 
 function filterCupones() {
   const q = (document.getElementById('cupon-search')?.value || '').toLowerCase().trim();
-  const list = cupones.filter(c => !q || getCuponCode(c).toLowerCase().includes(q));
+  const list = cupones.filter(c => {
+    if (!q) return true;
+    const code   = getCuponCode(c).toLowerCase();
+    const cname  = getCuponClientName(c).toLowerCase();
+    return code.includes(q) || cname.includes(q);
+  });
   const el = document.getElementById('cupon-list');
   if (!el) return;
   el.classList.toggle('bulk-mode', cuponMode === 'bulk');
@@ -1519,13 +1628,12 @@ function filterCupones() {
 }
 
 function cuponCardHTML(c) {
-  const code = getCuponCode(c);
-  const cuponId = getCuponId(c);
-  const redeemed = isRedeemed(c);
+  const code       = getCuponCode(c);
+  const cuponId    = getCuponId(c);
+  const redeemed   = isRedeemed(c);
   const clientName = getCuponClientName(c);
-  const clientId = getCuponClientId(c);
+  const clientId   = getCuponClientId(c);
   const isSelected = selectedCuponIds.has(cuponId);
-
   return `<div class="cupon-card-wrap">
     <input type="checkbox" class="cupon-cb" ${isSelected?'checked':''} data-cupon-cb="${esc(cuponId)}" onchange="toggleCuponSelect('${esc(cuponId)}')">
     <div class="cupon-card${isSelected?' selected':''}" data-cupon-id="${esc(cuponId)}">
@@ -1552,13 +1660,10 @@ function cuponCardHTML(c) {
 function openEditCupon(cuponId) {
   const c = cupones.find(x => getCuponId(x) === cuponId);
   if (!c) return;
-  const code = getCuponCode(c);
-  const cname = getCuponClientName(c);
-  const cid = getCuponClientId(c);
+  const code     = getCuponCode(c);
+  const cid      = getCuponClientId(c);
   const redeemed = isRedeemed(c);
-  const active = isActive(c);
   const fReclaim = c['fecha_reclamo'] || '';
-  const fCreacion = c['fecha_creacion'] || '';
 
   document.getElementById('edit-cupon-body').innerHTML = `
     <div class="form-group">
@@ -1594,25 +1699,20 @@ function openEditCupon(cuponId) {
 }
 
 async function saveEditCupon(cuponId) {
-  const c = cupones.find(x => getCuponId(x) === cuponId);
+  const c         = cupones.find(x => getCuponId(x) === cuponId);
   if (!c) return;
-  const newCode = document.getElementById('ecp-code').value.trim();
-  const clientId = document.getElementById('ecp-client').value;
-  const redimido = document.getElementById('ecp-redimido').value === 'true';
-  const fecha = document.getElementById('ecp-fecha').value;
-  const clientName = clientId ? (clients.find(x=>x['ID_Cliente']===clientId)||{})['Nombre_apellido'] || (clients.find(x=>x['ID_Cliente']===clientId)||{})['Nombre / apellido'] || '' : '';
+  const newCode   = document.getElementById('ecp-code').value.trim();
+  const clientId  = document.getElementById('ecp-client').value;
+  const redimido  = document.getElementById('ecp-redimido').value === 'true';
+  const fecha     = document.getElementById('ecp-fecha').value;
+  const clientRec = clients.find(x=>x['ID_Cliente']===clientId);
+  const clientName = clientId ? (clientRec?.['Nombre_apellido'] || clientRec?.['Nombre / apellido'] || '') : '';
 
   const data = {
-    id: cuponId,
-    Code: newCode,
-    id_cliente: clientId,
-    nombre_cliente: clientName,
-    redimido,
-    activo: !redimido,
+    id: cuponId, Code: newCode, id_cliente: clientId, nombre_cliente: clientName,
+    redimido, activo: !redimido,
     fecha_reclamo: fecha ? new Date(fecha).toISOString() : '',
-    // also old-key compat
-    'n°/codigo de cupon': newCode,
-    'cliente al que se le mando': clientId,
+    'n°/codigo de cupon': newCode, 'cliente al que se le mando': clientId,
   };
   try {
     await apiPost({ action: 'updateCupon', data });
@@ -1634,18 +1734,39 @@ function switchCuponTab(tab, btn) {
   if (btn) btn.classList.add('active');
 }
 
-function handleBulkInput(e) {
+// Parse codes from a raw string (comma, space, newline separated), min 3 chars each
+function parseCodesFromString(raw) {
+  return raw
+    .split(/[\n,\s]+/)
+    .map(s => s.trim())
+    .filter(s => s.length >= 3);
+}
+
+// Desktop: key events (Enter / comma)
+function handleBulkInputKey(e) {
   const input = document.getElementById('bulk-input');
   if (e.key === 'Enter' || e.key === ',') {
     e.preventDefault();
-    const val = input.value.replace(/,/g,'').trim();
-    if (val) addBulkCode(val);
+    const raw = input.value.replace(/,/g,'').trim();
+    if (raw.length >= 3) addBulkCode(raw);
+    input.value = '';
+  }
+}
+
+// Mobile: fires on every character change — detect separator chars inside the value
+function handleBulkInputChange(e) {
+  const input = document.getElementById('bulk-input');
+  const val   = input.value;
+  // If the current value contains a comma, newline, or ends with a space → split and tag
+  if (/[,\n]/.test(val) || (val.endsWith(' ') && val.trim().length >= 3)) {
+    const codes = parseCodesFromString(val);
+    codes.forEach(c => addBulkCode(c));
     input.value = '';
   }
 }
 
 function addBulkCode(code) {
-  if (!bulkCodes.includes(code)) { bulkCodes.push(code); renderBulkTags(); }
+  if (code && !bulkCodes.includes(code)) { bulkCodes.push(code); renderBulkTags(); }
 }
 
 function renderBulkTags() {
@@ -1657,9 +1778,25 @@ function renderBulkTags() {
 function removeBulkCode(i) { bulkCodes.splice(i,1); renderBulkTags(); }
 
 async function saveBulkCupons() {
-  const input = document.getElementById('bulk-input').value.trim();
-  if (input) addBulkCode(input);
+  if (isSavingBulkCupons) return;
+
+  // Also parse anything still typed in the input field
+  const inputEl  = document.getElementById('bulk-input');
+  const leftover = inputEl.value.trim();
+  if (leftover) {
+    parseCodesFromString(leftover).forEach(c => addBulkCode(c));
+    inputEl.value = '';
+  }
+
   if (!bulkCodes.length) { toast('Ingresá al menos un código', 'error'); return; }
+
+  isSavingBulkCupons = true;
+  const btn = document.getElementById('btn-save-bulk');
+  if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); btn.textContent = 'Guardando...'; }
+
+  // Close modal immediately so user doesn't angry-click
+  closeModal('modal-add-cupons');
+
   let ok = 0;
   const codesToAdd = [...bulkCodes];
   for (const code of codesToAdd) {
@@ -1669,27 +1806,36 @@ async function saveBulkCupons() {
       ok++;
     } catch(e) {}
   }
-  // Reset state
   bulkCodes = [];
   renderBulkTags();
-  document.getElementById('bulk-input').value = '';
   renderCupones();
-  closeModal('modal-add-cupons');
   toast(`${ok} cupón(es) agregado(s) ✓`, 'success');
+
+  isSavingBulkCupons = false;
+  if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); btn.textContent = 'Agregar Cupones'; }
 }
 
 function previewGenerate() {
   const prefix = document.getElementById('gen-prefix').value.trim() || 'PROMO-';
-  const count = parseInt(document.getElementById('gen-count').value) || 0;
+  const count  = parseInt(document.getElementById('gen-count').value) || 0;
   if (!count) { toast('Ingresá una cantidad', 'error'); return; }
   generatedPreviewCodes = Array.from({length: count}, (_,i) => `${prefix}${String(i+1).padStart(3,'0')}`);
   const prev = document.getElementById('gen-preview');
   prev.style.display = 'block';
-  prev.textContent = generatedPreviewCodes.slice(0,5).join(', ') + (count > 5 ? ` ... +${count-5} más` : '');
+  prev.textContent   = generatedPreviewCodes.slice(0,5).join(', ') + (count > 5 ? ` ... +${count-5} más` : '');
 }
 
 async function saveGeneratedCupons() {
+  if (isSavingGeneratedCupons) return;
   if (!generatedPreviewCodes.length) { previewGenerate(); if (!generatedPreviewCodes.length) return; }
+
+  isSavingGeneratedCupons = true;
+  const btn = document.getElementById('btn-save-generate');
+  if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); btn.textContent = 'Guardando...'; }
+
+  // Close modal immediately
+  closeModal('modal-add-cupons');
+
   let ok = 0;
   for (const code of generatedPreviewCodes) {
     try {
@@ -1701,46 +1847,66 @@ async function saveGeneratedCupons() {
   generatedPreviewCodes = [];
   document.getElementById('gen-preview').style.display = 'none';
   document.getElementById('gen-prefix').value = '';
-  document.getElementById('gen-count').value = '';
+  document.getElementById('gen-count').value  = '';
   renderCupones();
-  closeModal('modal-add-cupons');
   toast(`${ok} cupones generados ✓`, 'success');
+
+  isSavingGeneratedCupons = false;
+  if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); btn.textContent = 'Generar y Guardar'; }
 }
 
 async function saveSingleCupon() {
+  if (isSavingSingleCupon) return;
   const code = document.getElementById('single-code').value.trim();
   if (!code) { toast('Ingresá un código', 'error'); return; }
+
+  isSavingSingleCupon = true;
+  const btn = document.getElementById('btn-save-single');
+  if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); btn.textContent = 'Guardando...'; }
+
+  closeModal('modal-add-cupons');
+
   try {
     await apiPost({ action: 'createCupon', data: { Code: code, redimido: false, activo: true, id_cliente: '', nombre_cliente: '' } });
     cupones.push({ Code: code, 'n°/codigo de cupon': code, redimido: false, activo: true });
     document.getElementById('single-code').value = '';
     renderCupones();
-    closeModal('modal-add-cupons');
     toast('Cupón agregado ✓', 'success');
   } catch(e) { showErrorModal('Error', 'No se pudo crear el cupón.'); }
+
+  isSavingSingleCupon = false;
+  if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); btn.textContent = 'Agregar Cupón'; }
 }
 
 // ============================================================
-// REDEEM single
+// REDEEM — search by code AND client name
 // ============================================================
 function openRedeemModal() { openModal('modal-redeem'); }
 
 function filterRedeemList() {
-  const q = document.getElementById('redeem-search').value.toLowerCase().trim();
+  const q    = document.getElementById('redeem-search').value.toLowerCase().trim();
   const list = cupones.filter(c => {
-    const notRedeemed = !isRedeemed(c) && isActive(c);
-    return notRedeemed && (!q || getCuponCode(c).toLowerCase().includes(q));
+    if (isRedeemed(c) || !isActive(c)) return false;
+    if (!q) return true;
+    const code  = getCuponCode(c).toLowerCase();
+    const cname = getCuponClientName(c).toLowerCase();
+    return code.includes(q) || cname.includes(q);
   });
   const el = document.getElementById('redeem-list');
   if (!list.length) {
-    el.innerHTML = '<div class="empty-state" style="padding:20px"><p>No hay cupones activos.</p></div>';
+    el.innerHTML = '<div class="empty-state" style="padding:20px"><p>No hay cupones activos que coincidan.</p></div>';
     return;
   }
-  el.innerHTML = list.map(c => `
-    <div class="cupon-card">
-      <div><div class="cupon-code">${esc(getCuponCode(c))}</div></div>
+  el.innerHTML = list.map(c => {
+    const cname = getCuponClientName(c);
+    return `<div class="cupon-card">
+      <div>
+        <div class="cupon-code">${esc(getCuponCode(c))}</div>
+        ${cname ? `<div class="cupon-client">👤 ${esc(cname)}</div>` : ''}
+      </div>
       <button class="btn btn-primary btn-sm" onclick="redeemSingleCupon('${esc(getCuponId(c))}')">Canjear</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 async function redeemSingleCupon(cuponId) {
@@ -1767,7 +1933,7 @@ async function deleteSingleCupon(cuponId) {
 }
 
 // ============================================================
-// BULK ACTIONS on cupones
+// BULK CUPON ACTIONS
 // ============================================================
 async function bulkRedeemSelected() {
   const ids = [...selectedCuponIds];
@@ -1792,10 +1958,7 @@ async function bulkDeleteSelected() {
   if (!confirm(`¿Eliminar ${ids.length} cupón(es)? Esta acción no se puede deshacer.`)) return;
   let ok = 0;
   for (const id of ids) {
-    try {
-      await apiPost({ action: 'deleteCupon', data: { id } });
-      ok++;
-    } catch(e) {}
+    try { await apiPost({ action: 'deleteCupon', data: { id } }); ok++; } catch(e) {}
   }
   cupones = cupones.filter(c => !ids.includes(getCuponId(c)));
   selectedCuponIds.clear();
@@ -1804,37 +1967,76 @@ async function bulkDeleteSelected() {
 }
 
 // ============================================================
+// POOL PICKER — custom selection for "Usar lista"
+// ============================================================
+function renderPoolPicker() {
+  const q    = (document.getElementById('pool-picker-search')?.value || '').toLowerCase().trim();
+  const avail = cupones.filter(c => !isRedeemed(c) && isActive(c));
+  const shown = avail.filter(c => !q || getCuponCode(c).toLowerCase().includes(q) || getCuponClientName(c).toLowerCase().includes(q));
+  const el   = document.getElementById('pool-picker-list');
+  if (!el) return;
+  if (!shown.length) {
+    el.innerHTML = `<div style="padding:10px;font-size:0.8rem;color:var(--text-muted);text-align:center">No hay cupones activos${q?' que coincidan':''}</div>`;
+    updatePoolSummary();
+    return;
+  }
+  el.innerHTML = shown.map(c => {
+    const id   = getCuponId(c);
+    const code = getCuponCode(c);
+    const cname = getCuponClientName(c);
+    const checked = selectedPoolCuponIds.has(id);
+    return `<label class="pool-picker-item">
+      <input type="checkbox" ${checked?'checked':''} onchange="togglePoolCupon('${esc(id)}')">
+      <span class="pi-code">${esc(code)}</span>
+      ${cname ? `<span style="font-size:0.72rem;color:var(--text-muted)">· ${esc(cname)}</span>` : ''}
+      <span style="flex:1"></span>
+      <span class="pi-status">Activo</span>
+    </label>`;
+  }).join('');
+  updatePoolSummary();
+}
+
+function filterPoolPicker() { renderPoolPicker(); }
+
+function togglePoolCupon(id) {
+  if (selectedPoolCuponIds.has(id)) selectedPoolCuponIds.delete(id);
+  else selectedPoolCuponIds.add(id);
+  updatePoolSummary();
+}
+
+function updatePoolSummary() {
+  const el = document.getElementById('pool-selected-summary');
+  if (el) el.textContent = `${selectedPoolCuponIds.size} cupón(es) seleccionado(s)`;
+}
+
+// ============================================================
 // CUSTOM VARIABLES
 // ============================================================
 function addCustomVar() {
-  const varDef = { name: '', values: [''], cycleIndex: 0 };
-  customVars.push(varDef);
+  customVars.push({ name: '', values: [''], cycleIndex: 0 });
   renderCustomVars();
 }
 
 function renderCustomVars() {
   const container = document.getElementById('custom-vars-list');
   if (!container) return;
-  if (!customVars.length) { container.innerHTML = ''; return; }
   container.innerHTML = customVars.map((v, vi) => `
     <div class="custom-var-container">
       <div class="custom-var-name-row">
-        <span class="custom-var-name-label">Nombre de variable:</span>
+        <span class="custom-var-name-label">Nombre:</span>
         <input class="form-input" style="flex:1;font-family:monospace" placeholder="ej: saludo, emoji" value="${esc(v.name)}"
           oninput="updateCustomVarName(${vi}, this.value)">
-        <button class="custom-var-remove" onclick="removeCustomVar(${vi})" title="Eliminar variable">✕</button>
+        <button class="custom-var-remove" onclick="removeCustomVar(${vi})">✕</button>
       </div>
       <div style="font-size:0.72rem;color:var(--text-soft);margin-bottom:6px">
-        Se insertará como <strong>&amp;${esc(v.name||'?')}&amp;</strong> — al enviar, elige cíclicamente entre las opciones.
+        Se inserta como <strong>&amp;${esc(v.name||'?')}&amp;</strong> — elige cíclicamente entre las opciones.
       </div>
-      <div class="custom-var-inputs" id="cv-inputs-${vi}">
+      <div class="custom-var-inputs">
         ${v.values.map((val, oi) => `
           <div class="custom-var-input-row">
-            <input class="form-input" placeholder="Opción ${oi+1}" value="${esc(val)}"
-              oninput="updateCustomVarValue(${vi}, ${oi}, this.value)">
+            <input class="form-input" placeholder="Opción ${oi+1}" value="${esc(val)}" oninput="updateCustomVarValue(${vi},${oi},this.value)">
             ${v.values.length > 1 ? `<button class="custom-var-remove" onclick="removeCustomVarValue(${vi},${oi})">✕</button>` : ''}
-          </div>
-        `).join('')}
+          </div>`).join('')}
       </div>
       <button class="custom-var-add-btn" onclick="addCustomVarValue(${vi})">
         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
@@ -1842,43 +2044,18 @@ function renderCustomVars() {
       </button>
     </div>
   `).join('');
-
-  // Update chips in message area
   updateCustomVarChips();
 }
 
-function updateCustomVarName(vi, name) {
-  customVars[vi].name = name.trim();
-  updateCustomVarChips();
-  // Update the label inside without full re-render
-  const lbl = document.querySelector(`#custom-vars-list .custom-var-container:nth-child(${vi+1}) .custom-var-name-row + div`);
-  if (lbl) lbl.innerHTML = `Se insertará como <strong>&amp;${esc(name.trim()||'?')}&amp;</strong> — al enviar, elige cíclicamente entre las opciones.`;
-}
-
-function updateCustomVarValue(vi, oi, val) {
-  customVars[vi].values[oi] = val;
-}
-
-function addCustomVarValue(vi) {
-  customVars[vi].values.push('');
-  renderCustomVars();
-}
-
-function removeCustomVarValue(vi, oi) {
-  if (customVars[vi].values.length <= 1) return;
-  customVars[vi].values.splice(oi, 1);
-  renderCustomVars();
-}
-
-function removeCustomVar(vi) {
-  customVars.splice(vi, 1);
-  renderCustomVars();
-}
+function updateCustomVarName(vi, name) { customVars[vi].name = name.trim(); updateCustomVarChips(); }
+function updateCustomVarValue(vi, oi, val) { customVars[vi].values[oi] = val; }
+function addCustomVarValue(vi) { customVars[vi].values.push(''); renderCustomVars(); }
+function removeCustomVarValue(vi, oi) { if (customVars[vi].values.length <= 1) return; customVars[vi].values.splice(oi,1); renderCustomVars(); }
+function removeCustomVar(vi) { customVars.splice(vi,1); renderCustomVars(); }
 
 function updateCustomVarChips() {
   const row = document.getElementById('var-chips-row');
   if (!row) return;
-  // Remove old custom chips
   row.querySelectorAll('.var-chip.custom').forEach(el => el.remove());
   customVars.forEach(v => {
     if (v.name) {
@@ -1894,12 +2071,12 @@ function updateCustomVarChips() {
 function resolveCustomVars(message) {
   let msg = message;
   customVars.forEach(v => {
-    if (!v.name || !v.values.length) return;
+    if (!v.name) return;
     const validVals = v.values.filter(x => x.trim() !== '');
     if (!validVals.length) return;
     const val = validVals[v.cycleIndex % validVals.length];
     v.cycleIndex++;
-    const re = new RegExp(`&${v.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}&`, 'gi');
+    const re = new RegExp(`&${v.name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}&`, 'gi');
     msg = msg.replace(re, val);
   });
   return msg;
@@ -1914,20 +2091,15 @@ function selectCuponOpt(opt) {
     document.getElementById(`cupon-opt-${o}-lbl`).classList.toggle('checked', o===opt);
   });
   document.getElementById('tmpl-cupon-generate').style.display = opt==='generate' ? 'flex' : 'none';
-  document.getElementById('tmpl-cupon-pool').style.display = opt==='pool' ? 'flex' : 'none';
-  if (opt==='pool') updatePoolCount();
-}
-
-function updatePoolCount() {
-  const avail = cupones.filter(c => !isRedeemed(c) && !getCuponClientId(c) && isActive(c));
-  document.getElementById('tmpl-pool-count').innerHTML = `<div class="pool-dot"></div><span>${avail.length} cupón(es) disponibles en la lista</span>`;
+  document.getElementById('tmpl-cupon-pool').style.display     = opt==='pool'     ? 'flex' : 'none';
+  if (opt === 'pool') renderPoolPicker();
 }
 
 function insertVar(v) {
   const ta = document.getElementById('tmpl-message');
   if (!ta) return;
   const start = ta.selectionStart;
-  const end = ta.selectionEnd;
+  const end   = ta.selectionEnd;
   ta.value = ta.value.slice(0, start) + v + ta.value.slice(end);
   ta.selectionStart = ta.selectionEnd = start + v.length;
   ta.focus();
@@ -1935,11 +2107,10 @@ function insertVar(v) {
 
 async function createTemplate() {
   const name = document.getElementById('tmpl-name').value.trim();
-  const msg = document.getElementById('tmpl-message').value.trim();
+  const msg  = document.getElementById('tmpl-message').value.trim();
   if (!name) { toast('Ingresá un nombre para la plantilla', 'error'); return; }
-  if (!msg) { toast('Escribe el mensaje de la plantilla', 'error'); return; }
+  if (!msg)  { toast('Escribe el mensaje de la plantilla', 'error');  return; }
 
-  // Validate custom vars — remove empty values
   customVars.forEach(v => { v.values = v.values.filter(x => x.trim() !== ''); if (!v.values.length) v.values = ['']; });
 
   let cuponConfig = { type: activeCuponOpt };
@@ -1947,16 +2118,16 @@ async function createTemplate() {
     cuponConfig.prefix = document.getElementById('tmpl-gen-prefix').value.trim() || 'MSG-';
   }
   if (activeCuponOpt === 'pool') {
-    cuponConfig.pool = cupones.filter(c => !isRedeemed(c) && !getCuponClientId(c) && isActive(c)).map(c => getCuponId(c));
-    cuponConfig.poolIndex = 0;
-    if (!cuponConfig.pool.length) {
-      showErrorModal('Sin cupones disponibles', 'No hay cupones sin asignar en la lista. Agregá más cupones antes de usar esta opción.');
+    const poolIds = [...selectedPoolCuponIds];
+    if (!poolIds.length) {
+      showErrorModal('Sin cupones seleccionados', 'Seleccioná al menos un cupón de la lista antes de crear la plantilla.');
       return;
     }
+    cuponConfig.pool      = poolIds;
+    cuponConfig.poolIndex = 0;
   }
 
   activeTemplate = { name, message: msg, cuponConfig, sentToday: [] };
-  // Reset cycle indices
   customVars.forEach(v => v.cycleIndex = 0);
   closeModal('modal-template');
   showTemplateView();
@@ -1966,20 +2137,22 @@ async function createTemplate() {
 // TEMPLATE SEND VIEW
 // ============================================================
 function showTemplateView() {
-  document.getElementById('cupon-main-view').style.display = 'none';
+  document.getElementById('cupon-main-view').style.display   = 'none';
   document.getElementById('template-send-view').style.display = 'flex';
-  document.getElementById('fab-plantilla').style.display = 'none';
-  document.getElementById('tv-template-name').textContent = activeTemplate.name;
+  document.getElementById('fab-plantilla').style.display     = 'none';
+  document.getElementById('tv-template-name').textContent    = activeTemplate.name;
   const hasCupons = activeTemplate.cuponConfig.type !== 'none';
   document.getElementById('tv-template-desc').textContent = hasCupons
     ? (activeTemplate.cuponConfig.type === 'pool'
-        ? `Con cupones de lista (${activeTemplate.cuponConfig.pool?.length || 0} disponibles)`
+        ? `Con cupones de lista (${activeTemplate.cuponConfig.pool?.length || 0} seleccionados)`
         : 'Generando cupones únicos por cliente')
     : 'Sin cupones';
   if (hasCupons && activeTemplate.cuponConfig.type === 'pool') {
     document.getElementById('tv-pool-info').style.display = 'block';
     updateTVPoolInfo();
   }
+  showAllTemplateClients = false;
+  document.getElementById('btn-show-all').textContent = 'Mostrar todos';
   populateLocalidadFilter();
   filterTemplateClients();
 }
@@ -1991,47 +2164,62 @@ function updateTVPoolInfo() {
     : '⚠️ Sin cupones en la lista — cargá más antes de continuar';
 }
 
+function toggleShowAll() {
+  showAllTemplateClients = !showAllTemplateClients;
+  document.getElementById('btn-show-all').textContent = showAllTemplateClients ? 'Solo pendientes' : 'Mostrar todos';
+  filterTemplateClients();
+}
+
 function filterTemplateClients() {
-  const q = (document.getElementById('tv-search')?.value || '').toLowerCase().trim();
+  const q    = (document.getElementById('tv-search')?.value || '').toLowerCase().trim();
   const tipo = document.getElementById('tv-filter-tipo')?.value || '';
-  const loc = document.getElementById('tv-filter-localidad')?.value || '';
+  const loc  = document.getElementById('tv-filter-localidad')?.value || '';
   const today = new Date().toISOString().split('T')[0];
 
   let filtered = getActiveClients().filter(c => {
     const cTipo = c['Tienda_Online'] || c['Tienda / Online'] || '';
-    const cLoc = canonicalLoc(c['Localidad']);
+    const cLoc  = canonicalLoc(c['Localidad']);
     if (tipo && cTipo !== tipo) return false;
-    if (loc && cLoc !== loc) return false;
-    const lastCom = c['Fecha_de_ultima_Comunicacion'] || c['Fecha de ultima Cominicacion'];
-    if (lastCom && String(lastCom).startsWith(today)) return false;
-    if (activeTemplate?.sentToday?.includes(c['ID_Cliente'])) return false;
+    if (loc  && cLoc !== loc)  return false;
     if (q) {
       const name = c['Nombre_apellido'] || c['Nombre / apellido'] || '';
-      const hay = [name, c['Localidad'], c['Numero_de_telefono'] || c['Numero de telefono']].join(' ').toLowerCase();
+      const hay  = [name, c['Localidad'], c['Numero_de_telefono']||c['Numero de telefono']].join(' ').toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
   });
+
+  if (!showAllTemplateClients) {
+    filtered = filtered.filter(c => {
+      const lastCom = c['Fecha_de_ultima_Comunicacion'] || c['Fecha de ultima Cominicacion'];
+      if (lastCom && String(lastCom).startsWith(today)) return false;
+      if (activeTemplate?.sentToday?.includes(c['ID_Cliente'])) return false;
+      return true;
+    });
+  }
 
   activeTemplateClients = filtered;
   renderTemplateClientList(filtered);
 }
 
 function renderTemplateClientList(list) {
-  const el = document.getElementById('tv-client-list');
+  const el    = document.getElementById('tv-client-list');
+  const today = new Date().toISOString().split('T')[0];
   if (!list.length) {
     el.innerHTML = `<div class="empty-state"><div class="icon">✅</div><p>Todos los clientes ya fueron contactados hoy.</p></div>`;
     return;
   }
   el.innerHTML = list.map(c => {
-    const name = c['Nombre_apellido'] || c['Nombre / apellido'] || 'Sin nombre';
+    const name     = c['Nombre_apellido'] || c['Nombre / apellido'] || 'Sin nombre';
     const initials = name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-    const tel = c['Numero_de_telefono'] || c['Numero de telefono'] || '';
-    const loc = canonicalLoc(c['Localidad']) || '';
+    const tel      = c['Numero_de_telefono'] || c['Numero de telefono'] || '';
+    const loc      = canonicalLoc(c['Localidad']) || '';
+    const lastCom  = c['Fecha_de_ultima_Comunicacion'] || c['Fecha de ultima Cominicacion'];
+    const sentToday = (lastCom && String(lastCom).startsWith(today)) || activeTemplate?.sentToday?.includes(c['ID_Cliente']);
     return `<div class="client-card" onclick='sendTemplateToClient(${JSON.stringify(c['ID_Cliente'])})'>
       <div class="client-avatar">${initials}</div>
       <div class="client-info">
-        <div class="client-name">${esc(name)}</div>
+        <div class="client-name">${esc(name)}${sentToday ? '<span class="tv-sent-badge">Enviado hoy</span>' : ''}</div>
         <div style="font-size:0.78rem;color:var(--text-muted)">${esc(tel)}</div>
         <div class="client-meta">${loc ? `<span class="meta-tag">${esc(loc)}</span>` : ''}</div>
       </div>
@@ -2045,22 +2233,64 @@ function renderTemplateClientList(list) {
   }).join('');
 }
 
+// ============================================================
+// LOADING SCREEN HELPERS
+// ============================================================
+const WA_STEPS = [
+  'Guardando comunicación...',
+  'Generando cupón único...',
+  'Preparando enlace de WhatsApp...',
+];
+let waStepInterval = null;
+
+function showWALoading() {
+  isSendingWA = true;
+  const screen = document.getElementById('wa-loading-screen');
+  screen.classList.add('visible');
+  let si = 0;
+  document.getElementById('wa-loading-step').textContent = WA_STEPS[0];
+  waStepInterval = setInterval(() => {
+    si = (si + 1) % WA_STEPS.length;
+    document.getElementById('wa-loading-step').textContent = WA_STEPS[si];
+  }, 1200);
+}
+
+function hideWALoading() {
+  isSendingWA = false;
+  clearInterval(waStepInterval);
+  document.getElementById('wa-loading-screen').classList.remove('visible');
+}
+
+// ============================================================
+// SEND TEMPLATE TO CLIENT — with loading screen + repeat-send warning
+// ============================================================
 async function sendTemplateToClient(clientId) {
+  if (isSendingWA) return;
+
   const c = clients.find(x => x['ID_Cliente'] === clientId);
   if (!c) return;
 
-  // Get phone — it should already be in normalized format 549XXXXXXXXXXX
+  // Check if already sent today → warn
+  const today   = new Date().toISOString().split('T')[0];
+  const lastCom = c['Fecha_de_ultima_Comunicacion'] || c['Fecha de ultima Cominicacion'];
+  const sentAlready = (lastCom && String(lastCom).startsWith(today)) || activeTemplate?.sentToday?.includes(clientId);
+  if (sentAlready) {
+    const ok = confirm(`⚠️ Hoy ya le enviaste un mensaje a ${c['Nombre_apellido']||c['Nombre / apellido']}.\n¿Querés enviarle otro igual?`);
+    if (!ok) return;
+  }
+
   let tel = String(c['Numero_de_telefono'] || c['Numero de telefono'] || '').replace(/\D/g,'');
   if (!tel) {
-    showErrorModal('Teléfono faltante', `El cliente ${c['Nombre_apellido']||c['Nombre / apellido']||clientId} no tiene número de teléfono registrado. Editá el cliente y agregá su número antes de enviar.`);
+    showErrorModal('Teléfono faltante', `El cliente ${c['Nombre_apellido']||c['Nombre / apellido']||clientId} no tiene número. Editalo y agregá su teléfono.`);
     return;
   }
-  // Ensure proper WhatsApp format: starts with 549
   if (!tel.startsWith('549')) {
     if (tel.startsWith('54')) tel = '549' + tel.slice(2);
     else if (tel.startsWith('0')) tel = '549' + tel.slice(1);
     else tel = '549' + tel;
   }
+
+  showWALoading();
 
   const tmpl = activeTemplate;
   let cuponCode = '';
@@ -2072,12 +2302,13 @@ async function sendTemplateToClient(clientId) {
       await apiPost({ action: 'createCupon', data: { Code: cuponCode, id_cliente: clientId, nombre_cliente: c['Nombre_apellido']||c['Nombre / apellido']||'', redimido: false, activo: true } });
       cupones.push({ Code: cuponCode, 'n°/codigo de cupon': cuponCode, id_cliente: clientId, nombre_cliente: c['Nombre_apellido']||c['Nombre / apellido']||'', redimido: false, activo: true });
       renderCupones();
-    } catch(e) { showErrorModal('Error al generar cupón', 'No se pudo crear el cupón para este cliente.'); return; }
+    } catch(e) { hideWALoading(); showErrorModal('Error al generar cupón', 'No se pudo crear el cupón para este cliente.'); return; }
   } else if (tmpl.cuponConfig.type === 'pool') {
     const pool = tmpl.cuponConfig.pool;
-    const idx = tmpl.cuponConfig.poolIndex;
+    const idx  = tmpl.cuponConfig.poolIndex;
     if (idx >= pool.length) {
-      showErrorModal('Sin cupones', '⚠️ Ya no quedan cupones disponibles en la lista. Agregá más cupones y creá una nueva plantilla.');
+      hideWALoading();
+      showErrorModal('Sin cupones', '⚠️ Ya no quedan cupones disponibles en la lista. Agregá más y creá una nueva plantilla.');
       return;
     }
     cuponCode = pool[idx];
@@ -2091,16 +2322,15 @@ async function sendTemplateToClient(clientId) {
     renderCupones();
   }
 
-  // Build message — resolve system vars then custom vars
+  // Resolve message
   let msg = tmpl.message;
-  msg = msg.replace(/&nombre&/gi, c['Nombre_apellido']||c['Nombre / apellido']||'');
+  msg = msg.replace(/&nombre&/gi,   c['Nombre_apellido']||c['Nombre / apellido']||'');
   msg = msg.replace(/&localidad&/gi, canonicalLoc(c['Localidad'])||'');
   msg = msg.replace(/&telefono&/gi, tel);
-  msg = msg.replace(/&cupon&/gi, cuponCode);
+  msg = msg.replace(/&cupon&/gi,    cuponCode);
   msg = resolveCustomVars(msg);
 
-  // Update last contacted
-  const today = new Date().toISOString().split('T')[0];
+  // Update contact history
   let notasCom = [];
   try { const raw = c['Notas_de_comunicacion']||c['Notas de comunicacion']; notasCom = typeof raw==='string' ? JSON.parse(raw) : (raw||[]); } catch(e){ notasCom=[]; }
   notasCom.push({ 'Fecha': today, 'Descripcion': msg.slice(0,120), 'Plantilla': tmpl.name });
@@ -2119,19 +2349,23 @@ async function sendTemplateToClient(clientId) {
   } catch(e) {}
 
   tmpl.sentToday.push(clientId);
-  filterTemplateClients();
 
   const waUrl = `https://wa.me/${tel}?text=${encodeURIComponent(msg)}`;
+
+  hideWALoading();
+  filterTemplateClients();
   window.open(waUrl, '_blank');
   toast(`Abriendo WhatsApp para ${c['Nombre_apellido']||c['Nombre / apellido']}`, 'success');
 }
 
 function exitTemplateView() {
-  activeTemplate = null;
+  activeTemplate           = null;
+  showAllTemplateClients   = false;
+  selectedPoolCuponIds.clear();
   document.getElementById('template-send-view').style.display = 'none';
-  document.getElementById('cupon-main-view').style.display = 'block';
-  document.getElementById('fab-plantilla').style.display = 'flex';
-  document.getElementById('tv-pool-info').style.display = 'none';
+  document.getElementById('cupon-main-view').style.display    = 'block';
+  document.getElementById('fab-plantilla').style.display      = 'flex';
+  document.getElementById('tv-pool-info').style.display       = 'none';
   renderCupones();
 }
 
@@ -2141,15 +2375,37 @@ function exitTemplateView() {
 function openModal(id) {
   document.getElementById(id).classList.add('open');
   document.body.style.overflow = 'hidden';
-  if (id === 'modal-redeem') filterRedeemList();
-  if (id === 'modal-template') { updatePoolCount(); renderCustomVars(); }
+
+  if (id === 'modal-redeem')   filterRedeemList();
+  if (id === 'modal-template') { renderPoolPicker(); renderCustomVars(); }
+
   if (id === 'modal-add-cupons') {
-    // Reset bulk input state when opening
-    bulkCodes = [];
-    renderBulkTags();
+    // Reset state
+    bulkCodes = []; renderBulkTags();
     document.getElementById('bulk-input').value = '';
     generatedPreviewCodes = [];
-    document.getElementById('gen-preview').style.display = 'none';
+    const prev = document.getElementById('gen-preview');
+    if (prev) prev.style.display = 'none';
+    // Re-enable all save buttons
+    [['btn-save-bulk','Agregar Cupones'],['btn-save-generate','Generar y Guardar'],['btn-save-single','Agregar Cupón']].forEach(([bid, label]) => {
+      const b = document.getElementById(bid);
+      if (b) { b.disabled = false; b.classList.remove('btn-loading'); b.textContent = label; }
+    });
+    isSavingBulkCupons = false; isSavingGeneratedCupons = false; isSavingSingleCupon = false;
+  }
+
+  if (id === 'modal-new-client') {
+    const today  = new Date().toISOString().split('T')[0];
+    document.getElementById('nc-fecha').value = today;
+    const locSel = document.getElementById('nc-localidad');
+    if (locSel) {
+      const smOpt = Array.from(locSel.options).find(o => normalizeLoc(o.value).includes('san miguel'));
+      if (smOpt) locSel.value = smOpt.value;
+    }
+    // Re-enable save button
+    const btn = document.getElementById('btn-save-client');
+    if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); btn.textContent = 'Guardar Cliente'; }
+    isSavingClient = false;
   }
 }
 
@@ -2169,7 +2425,7 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 // ============================================================
 function showErrorModal(title, msg) {
   document.getElementById('error-modal-title').textContent = title;
-  document.getElementById('error-modal-msg').textContent = msg;
+  document.getElementById('error-modal-msg').textContent   = msg;
   openModal('modal-error');
 }
 
