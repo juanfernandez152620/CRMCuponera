@@ -161,7 +161,6 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 .date-label { font-size: 0.68rem; color: var(--text-soft); }
 .date-val { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
 
-/* FAB — mobile-first: pegados a los bordes del viewport, dentro del contenedor en desktop */
 .fab {
   position: fixed;
   bottom: 24px;
@@ -171,7 +170,6 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
   box-shadow: 0 4px 20px rgba(212,120,106,0.45);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.4rem; transition: all 0.2s; z-index: 50;
-  /* Mobile: right edge with 16px margin */
   right: 16px;
 }
 .fab:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(212,120,106,0.55); }
@@ -182,13 +180,11 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
   box-shadow: 0 4px 20px rgba(37,211,102,0.35);
   font-size: 0.88rem; font-weight: 600; gap: 8px;
   white-space: nowrap;
-  /* Mobile: left edge with 16px margin */
   left: 16px;
   right: auto;
 }
 .fab-wa:hover { box-shadow: 0 6px 24px rgba(37,211,102,0.5); }
 
-/* Desktop: anchor to the app container edges */
 @media (min-width: 520px) {
   .fab {
     right: calc(50% - var(--max-w)/2 + 16px);
@@ -220,6 +216,7 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
   position: sticky; top: 0; background: var(--white); z-index: 2;
 }
 .modal-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; }
+.modal-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
 .btn-close {
   width: 32px; height: 32px; border-radius: 50%; border: none;
   background: var(--blush); color: var(--text-muted);
@@ -446,6 +443,125 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 
 /* SHOW-ALL toggle */
 .tv-sent-badge { background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; border-radius: 10px; font-size: 0.7rem; font-weight: 600; padding: 2px 7px; margin-left: 6px; }
+
+/* ============================================================
+   JSON IMPORT/EXPORT MODAL — new styles
+   ============================================================ */
+.json-io-header {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.json-io-tabs {
+  display: flex; border-bottom: 1px solid var(--border);
+  margin: 0 -20px; padding: 0 20px; gap: 0;
+}
+.json-io-tab {
+  flex: 1; padding: 11px 0; font-size: 0.85rem; font-weight: 600;
+  border: none; background: none; cursor: pointer;
+  color: var(--text-muted); border-bottom: 2.5px solid transparent;
+  transition: all 0.2s; text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.json-io-tab.active { color: var(--pink-deep); border-bottom-color: var(--pink-deep); }
+
+.json-io-panel { display: none; flex-direction: column; gap: 14px; padding-top: 4px; }
+.json-io-panel.active { display: flex; }
+
+/* Action cards — the 2 sub-options inside each tab */
+.json-action-card {
+  background: var(--cream); border-radius: var(--radius);
+  border: 1.5px solid var(--border); padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.15s;
+}
+.json-action-card:hover { border-color: var(--pink-light); }
+.json-action-card-title {
+  font-size: 0.85rem; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.json-action-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.json-action-icon.export-text  { background: #fdf0f5; }
+.json-action-icon.export-file  { background: #f0f5fd; }
+.json-action-icon.import-text  { background: #f0fdf4; }
+.json-action-icon.import-file  { background: #fef9c3; }
+
+.json-action-desc { font-size: 0.76rem; color: var(--text-muted); line-height: 1.5; }
+
+.json-code-block {
+  background: var(--text); color: #f8d7ca;
+  border-radius: var(--radius-sm); padding: 12px;
+  font-family: monospace; font-size: 0.72rem; line-height: 1.6;
+  max-height: 200px; overflow-y: auto; white-space: pre-wrap;
+  word-break: break-all;
+}
+.json-code-block::-webkit-scrollbar-thumb { background: #5a3a38; }
+
+.json-copy-row { display: flex; gap: 8px; }
+
+.json-import-textarea {
+  width: 100%; min-height: 130px; resize: vertical;
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--white);
+  font-family: monospace; font-size: 0.78rem; color: var(--text);
+  transition: border-color 0.2s; line-height: 1.5;
+}
+.json-import-textarea:focus { outline: none; border-color: var(--pink); }
+.json-import-textarea.error { border-color: #dc2626; }
+.json-import-textarea.ok    { border-color: #15803d; }
+
+.json-validation-msg {
+  font-size: 0.75rem; font-weight: 600; padding: 6px 10px;
+  border-radius: var(--radius-sm); display: none;
+}
+.json-validation-msg.error { background: #fef2f2; color: #dc2626; display: block; }
+.json-validation-msg.ok    { background: #f0fdf4; color: #15803d; display: block; }
+
+.file-drop-zone {
+  border: 2px dashed var(--border-strong); border-radius: var(--radius);
+  padding: 20px 16px; text-align: center; cursor: pointer;
+  transition: all 0.2s; background: var(--cream);
+}
+.file-drop-zone:hover, .file-drop-zone.drag-over {
+  border-color: var(--pink); background: var(--blush);
+}
+.file-drop-zone .drop-icon { font-size: 1.8rem; margin-bottom: 6px; }
+.file-drop-zone p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+.file-drop-zone small { font-size: 0.7rem; color: var(--text-soft); }
+.file-drop-zone input[type=file] { display: none; }
+
+.json-section-divider {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.72rem; color: var(--text-soft); font-weight: 600;
+}
+.json-section-divider::before, .json-section-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* Template import/export buttons row in modal */
+.tmpl-io-btns-row {
+  display: flex; gap: 8px; padding: 0;
+}
+.btn-tmpl-export {
+  flex: 1; background: var(--blush); color: var(--pink-deep);
+  border: 1.5px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 8px 10px; border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-tmpl-export:hover { background: var(--pink-light); border-color: var(--pink); }
+.btn-tmpl-import {
+  flex: 1; background: #f0f5fd; color: #4a74be;
+  border: 1.5px solid #ccd8f5;
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 8px 10px; border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-tmpl-import:hover { background: #e4edfb; border-color: #99b4e8; }
 </style>
 </head>
 <body>
@@ -832,10 +948,26 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
 <div class="modal-overlay" id="modal-template">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">Plantilla de Mensajes</span>
+      <div class="json-io-header">
+        <span class="modal-title">Plantilla de Mensajes</span>
+        <span class="modal-subtitle">Creá y gestioná tu mensaje</span>
+      </div>
       <button class="btn-close" onclick="closeModal('modal-template')">×</button>
     </div>
     <div class="modal-body">
+
+      <!-- ▼ NEW: Import / Export JSON buttons -->
+      <div class="tmpl-io-btns-row">
+        <button class="btn-tmpl-export" onclick="openModal('modal-json-io'); switchJsonIoTab('export')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Exportar JSON
+        </button>
+        <button class="btn-tmpl-import" onclick="openModal('modal-json-io'); switchJsonIoTab('import')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 16 12 21 17 16"/><line x1="12" y1="21" x2="12" y2="9"/></svg>
+          Importar JSON
+        </button>
+      </div>
+
       <div class="form-group">
         <label class="form-label">Nombre de la plantilla</label>
         <input class="form-input" id="tmpl-name" placeholder="Ej: Promo de verano">
@@ -904,13 +1036,146 @@ select.filter-select:focus { outline: none; border-color: var(--pink); }
   </div>
 </div>
 
+<!-- ============================================================
+     JSON IMPORT / EXPORT MODAL — new modal
+     ============================================================ -->
+<div class="modal-overlay" id="modal-json-io">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="json-io-header">
+        <span class="modal-title">Plantilla JSON</span>
+        <span class="modal-subtitle">Exportá o importá tu plantilla</span>
+      </div>
+      <button class="btn-close" onclick="closeModal('modal-json-io')">×</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="json-io-tabs" style="padding: 0 20px; margin: 0;">
+      <button class="json-io-tab active" id="json-tab-export-btn" onclick="switchJsonIoTab('export')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Exportar
+      </button>
+      <button class="json-io-tab" id="json-tab-import-btn" onclick="switchJsonIoTab('import')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 16 12 21 17 16"/><line x1="12" y1="21" x2="12" y2="9"/></svg>
+        Importar
+      </button>
+    </div>
+
+    <div class="modal-body" style="gap:12px">
+
+      <!-- ===== EXPORT PANEL ===== -->
+      <div class="json-io-panel active" id="json-panel-export">
+
+        <!-- EXPORT AS TEXT -->
+        <div class="json-action-card">
+          <div class="json-action-card-title">
+            <div class="json-action-icon export-text">📋</div>
+            <div>
+              <div>Exportar como texto</div>
+              <div style="font-size:0.72rem;font-weight:400;color:var(--text-muted);margin-top:1px">Copiá el JSON al portapapeles</div>
+            </div>
+          </div>
+          <div id="json-export-code-block" class="json-code-block">
+            — Abrí esta ventana desde el formulario de plantilla para ver el JSON —
+          </div>
+          <div class="json-copy-row">
+            <button class="btn btn-primary btn-sm" style="flex:1" onclick="copyJsonToClipboard()">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Copiar JSON
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="refreshExportPreview()">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+              Actualizar
+            </button>
+          </div>
+        </div>
+
+        <div class="json-section-divider">o</div>
+
+        <!-- EXPORT AS FILE -->
+        <div class="json-action-card">
+          <div class="json-action-card-title">
+            <div class="json-action-icon export-file">💾</div>
+            <div>
+              <div>Exportar como archivo</div>
+              <div style="font-size:0.72rem;font-weight:400;color:var(--text-muted);margin-top:1px">Descargá un archivo .json</div>
+            </div>
+          </div>
+          <div style="font-size:0.78rem;color:var(--text-muted)">
+            El archivo se descargará con el nombre de la plantilla. Podés compartirlo y luego importarlo en otra sesión.
+          </div>
+          <button class="btn btn-primary btn-sm btn-full" onclick="downloadJsonFile()">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 16 12 21 17 16"/><line x1="12" y1="21" x2="12" y2="9"/></svg>
+            Descargar .json
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== IMPORT PANEL ===== -->
+      <div class="json-io-panel" id="json-panel-import">
+
+        <!-- IMPORT FROM TEXT -->
+        <div class="json-action-card">
+          <div class="json-action-card-title">
+            <div class="json-action-icon import-text">✏️</div>
+            <div>
+              <div>Importar desde texto</div>
+              <div style="font-size:0.72rem;font-weight:400;color:var(--text-muted);margin-top:1px">Pegá el JSON directamente</div>
+            </div>
+          </div>
+          <div style="font-size:0.76rem;color:var(--text-muted)">
+            Formato esperado: <code style="background:var(--cream);padding:1px 4px;border-radius:3px;font-size:0.72rem">{"Mensaje":"...","Variables":[{"nombre":"...","valores":["..."]}]}</code>
+          </div>
+          <textarea
+            class="json-import-textarea"
+            id="json-import-textarea"
+            placeholder='{"Mensaje":"Hola &nombre&! 🌸","Variables":[{"nombre":"saludo","valores":["Hola","Buenos días","Hey"]}]}'
+            oninput="validateImportJson()"
+          ></textarea>
+          <div class="json-validation-msg" id="json-validation-msg"></div>
+          <button class="btn btn-primary btn-sm btn-full" onclick="applyImportFromText()">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Aplicar al formulario
+          </button>
+        </div>
+
+        <div class="json-section-divider">o</div>
+
+        <!-- IMPORT FROM FILE -->
+        <div class="json-action-card">
+          <div class="json-action-card-title">
+            <div class="json-action-icon import-file">📂</div>
+            <div>
+              <div>Importar desde archivo</div>
+              <div style="font-size:0.72rem;font-weight:400;color:var(--text-muted);margin-top:1px">Cargá un archivo .json</div>
+            </div>
+          </div>
+          <label class="file-drop-zone" id="file-drop-zone" for="json-file-input"
+            ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleFileDrop(event)">
+            <div class="drop-icon">🗂</div>
+            <p>Arrastrá tu archivo aquí o tocá para elegir</p>
+            <small>Solo archivos .json</small>
+            <input type="file" id="json-file-input" accept=".json,application/json" onchange="handleFileSelect(event)">
+          </label>
+          <div class="json-validation-msg" id="json-file-validation-msg"></div>
+          <button class="btn btn-primary btn-sm btn-full" id="btn-apply-file-import" onclick="applyImportFromFile()" disabled>
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Aplicar al formulario
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /modal-body -->
+  </div>
+</div>
+<!-- END JSON IO MODAL -->
+
 <div class="toast-container" id="toast-container"></div>
 
 <script>
 // ============================================================
 // CONFIG
 // ============================================================
-
 const API_URL = "https://script.google.com/macros/s/AKfycbw4RQ2Z1XmmYSxdQuQ2ecAsqqsSKVvOu6l0KcxVlVRpOe8igKgo3vv8kDIKWp57yjkV3w/exec";
 
 // ============================================================
@@ -1018,8 +1283,6 @@ let customVars = [];
 let cuponMode = 'normal';
 let selectedCuponIds = new Set();
 let showAllTemplateClients = false;
-
-// Selected pool cupons in template modal
 let selectedPoolCuponIds = new Set();
 
 // Date range filters
@@ -1029,12 +1292,15 @@ let dateFilters = {
 };
 let activeDatePanel = { compra: false, contacto: false };
 
-// Request lock flags (prevent angry clicks)
+// Request lock flags
 let isSavingClient = false;
 let isSavingBulkCupons = false;
 let isSavingGeneratedCupons = false;
 let isSavingSingleCupon = false;
 let isSendingWA = false;
+
+// JSON import state
+let pendingFileJson = null; // parsed JSON from a loaded file, waiting to be applied
 
 // ============================================================
 // API HELPERS
@@ -1116,7 +1382,7 @@ function populateLocalidadFilter() {
 }
 
 // ============================================================
-// CRM FILTER & RENDER — DATE RANGE
+// CRM FILTER & RENDER
 // ============================================================
 function getActiveClients() {
   return clients.filter(c => c['activo'] !== false && c['activo'] !== 'FALSE');
@@ -1144,7 +1410,6 @@ function setDatePreset(type, days, btn) {
   const from = new Date(); from.setDate(from.getDate() - days);
   dateFilters[type].from = from;
   dateFilters[type].to   = to;
-  // Update inputs
   const pad = n => String(n).padStart(2,'0');
   const fmt  = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
   const fi = document.getElementById(`date-from-${type}`);
@@ -1160,7 +1425,6 @@ function applyDateRange(type) {
   const ti = document.getElementById(`date-to-${type}`);
   dateFilters[type].from = fi && fi.value ? new Date(fi.value + 'T00:00:00') : null;
   dateFilters[type].to   = ti && ti.value ? new Date(ti.value + 'T23:59:59') : null;
-  // Clear preset buttons
   document.querySelectorAll(`#date-filter-${type} .date-btn`).forEach(b => b.classList.remove('active'));
   document.getElementById(`chip-date-${type}`).classList.add('active');
   filterClients();
@@ -1192,7 +1456,6 @@ function filterClients() {
   const q    = document.getElementById('crm-search').value.toLowerCase().trim();
   const tipo = document.getElementById('filter-tipo').value;
   const loc  = document.getElementById('filter-localidad').value;
-
   const hasDateFilter = range => range.from || range.to;
 
   let filtered = getActiveClients().filter(c => {
@@ -1200,14 +1463,12 @@ function filterClients() {
     const cLoc  = canonicalLoc(c['Localidad']);
     if (tipo && cTipo !== tipo) return false;
     if (loc && cLoc !== loc) return false;
-
     if (hasDateFilter(dateFilters.compra)) {
       if (!inDateRange(c['Fecha_de_ultima_compra'] || c['Fecha de ultima compra'], dateFilters.compra)) return false;
     }
     if (hasDateFilter(dateFilters.contacto)) {
       if (!inDateRange(c['Fecha_de_ultima_Comunicacion'] || c['Fecha de ultima Cominicacion'], dateFilters.contacto)) return false;
     }
-
     if (q) {
       const name = c['Nombre_apellido'] || c['Nombre / apellido'] || '';
       const hay = [name, c['Localidad'], c['Numero_de_telefono'] || c['Numero de telefono']].join(' ').toLowerCase();
@@ -1427,7 +1688,7 @@ async function saveEditClient() {
 }
 
 // ============================================================
-// NEW CLIENT — with lock
+// NEW CLIENT
 // ============================================================
 async function createClient() {
   if (isSavingClient) return;
@@ -1557,7 +1818,7 @@ async function saveNote() {
 }
 
 // ============================================================
-// CUPONES — helpers
+// CUPONES
 // ============================================================
 function getCuponCode(c) { return c['Code'] || c['n°/codigo de cupon'] || c['Cupon_ID'] || ''; }
 function getCuponId(c)   { return c['Cupon_ID'] || c['n°/codigo de cupon'] || c['Code'] || ''; }
@@ -1572,9 +1833,6 @@ function getCuponClientName(c) {
 function isRedeemed(c) { return c['redimido'] === true || c['redimido'] === 'TRUE'; }
 function isActive(c)   { return c['activo'] !== false && c['activo'] !== 'FALSE'; }
 
-// ============================================================
-// CUPONES RENDER
-// ============================================================
 function setCuponMode(mode) {
   cuponMode = mode;
   selectedCuponIds.clear();
@@ -1734,15 +1992,10 @@ function switchCuponTab(tab, btn) {
   if (btn) btn.classList.add('active');
 }
 
-// Parse codes from a raw string (comma, space, newline separated), min 3 chars each
 function parseCodesFromString(raw) {
-  return raw
-    .split(/[\n,\s]+/)
-    .map(s => s.trim())
-    .filter(s => s.length >= 3);
+  return raw.split(/[\n,\s]+/).map(s => s.trim()).filter(s => s.length >= 3);
 }
 
-// Desktop: key events (Enter / comma)
 function handleBulkInputKey(e) {
   const input = document.getElementById('bulk-input');
   if (e.key === 'Enter' || e.key === ',') {
@@ -1753,11 +2006,9 @@ function handleBulkInputKey(e) {
   }
 }
 
-// Mobile: fires on every character change — detect separator chars inside the value
 function handleBulkInputChange(e) {
   const input = document.getElementById('bulk-input');
   const val   = input.value;
-  // If the current value contains a comma, newline, or ends with a space → split and tag
   if (/[,\n]/.test(val) || (val.endsWith(' ') && val.trim().length >= 3)) {
     const codes = parseCodesFromString(val);
     codes.forEach(c => addBulkCode(c));
@@ -1779,22 +2030,17 @@ function removeBulkCode(i) { bulkCodes.splice(i,1); renderBulkTags(); }
 
 async function saveBulkCupons() {
   if (isSavingBulkCupons) return;
-
-  // Also parse anything still typed in the input field
   const inputEl  = document.getElementById('bulk-input');
   const leftover = inputEl.value.trim();
   if (leftover) {
     parseCodesFromString(leftover).forEach(c => addBulkCode(c));
     inputEl.value = '';
   }
-
   if (!bulkCodes.length) { toast('Ingresá al menos un código', 'error'); return; }
 
   isSavingBulkCupons = true;
   const btn = document.getElementById('btn-save-bulk');
   if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); btn.textContent = 'Guardando...'; }
-
-  // Close modal immediately so user doesn't angry-click
   closeModal('modal-add-cupons');
 
   let ok = 0;
@@ -1832,8 +2078,6 @@ async function saveGeneratedCupons() {
   isSavingGeneratedCupons = true;
   const btn = document.getElementById('btn-save-generate');
   if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); btn.textContent = 'Guardando...'; }
-
-  // Close modal immediately
   closeModal('modal-add-cupons');
 
   let ok = 0;
@@ -1863,7 +2107,6 @@ async function saveSingleCupon() {
   isSavingSingleCupon = true;
   const btn = document.getElementById('btn-save-single');
   if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); btn.textContent = 'Guardando...'; }
-
   closeModal('modal-add-cupons');
 
   try {
@@ -1879,7 +2122,7 @@ async function saveSingleCupon() {
 }
 
 // ============================================================
-// REDEEM — search by code AND client name
+// REDEEM
 // ============================================================
 function openRedeemModal() { openModal('modal-redeem'); }
 
@@ -1967,7 +2210,7 @@ async function bulkDeleteSelected() {
 }
 
 // ============================================================
-// POOL PICKER — custom selection for "Usar lista"
+// POOL PICKER
 // ============================================================
 function renderPoolPicker() {
   const q    = (document.getElementById('pool-picker-search')?.value || '').toLowerCase().trim();
@@ -2134,6 +2377,247 @@ async function createTemplate() {
 }
 
 // ============================================================
+// ============================================================
+// JSON IMPORT / EXPORT  — new feature
+// ============================================================
+// ============================================================
+
+/**
+ * Builds the JSON object from the current template form state.
+ * Format:
+ * {
+ *   "Mensaje": "...",
+ *   "Variables": [
+ *     { "nombre": "varName", "valores": ["op1", "op2"] },
+ *     ...
+ *   ]
+ * }
+ */
+function buildTemplateJson() {
+  const mensaje = (document.getElementById('tmpl-message')?.value || '').trim();
+  const variables = customVars
+    .filter(v => v.name && v.values.some(x => x.trim()))
+    .map(v => ({
+      nombre: v.name,
+      valores: v.values.filter(x => x.trim() !== '')
+    }));
+  return { Mensaje: mensaje, Variables: variables };
+}
+
+/**
+ * Applies a parsed JSON object to the template form.
+ * Expects: { Mensaje: string, Variables: [{nombre, valores}] }
+ */
+function applyTemplateJson(data) {
+  if (typeof data.Mensaje === 'string') {
+    const ta = document.getElementById('tmpl-message');
+    if (ta) ta.value = data.Mensaje;
+  }
+  if (Array.isArray(data.Variables)) {
+    customVars = data.Variables
+      .filter(v => v && typeof v.nombre === 'string')
+      .map(v => ({
+        name: v.nombre,
+        values: Array.isArray(v.valores) ? v.valores.map(String) : [''],
+        cycleIndex: 0
+      }));
+    renderCustomVars();
+  }
+}
+
+/**
+ * Validates a raw JSON string for the template format.
+ * Returns { ok: true, data } or { ok: false, error: string }
+ */
+function validateTemplateJsonString(raw) {
+  let parsed;
+  try {
+    parsed = JSON.parse(raw.trim());
+  } catch(e) {
+    return { ok: false, error: `JSON inválido: ${e.message}` };
+  }
+  if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+    return { ok: false, error: 'El JSON debe ser un objeto con las claves "Mensaje" y "Variables".' };
+  }
+  if (!('Mensaje' in parsed)) {
+    return { ok: false, error: 'Falta la clave "Mensaje" en el JSON.' };
+  }
+  if (typeof parsed.Mensaje !== 'string') {
+    return { ok: false, error: '"Mensaje" debe ser un string de texto.' };
+  }
+  if ('Variables' in parsed) {
+    if (!Array.isArray(parsed.Variables)) {
+      return { ok: false, error: '"Variables" debe ser un array.' };
+    }
+    for (let i = 0; i < parsed.Variables.length; i++) {
+      const v = parsed.Variables[i];
+      if (!v || typeof v !== 'object') return { ok: false, error: `Variable [${i}] no es un objeto válido.` };
+      if (typeof v.nombre !== 'string') return { ok: false, error: `Variable [${i}] le falta "nombre" (string).` };
+      if (!Array.isArray(v.valores))    return { ok: false, error: `Variable [${i}] le falta "valores" (array).` };
+    }
+  }
+  return { ok: true, data: parsed };
+}
+
+// ---------- TAB SWITCHER ----------
+function switchJsonIoTab(tab) {
+  document.getElementById('json-tab-export-btn').classList.toggle('active', tab === 'export');
+  document.getElementById('json-tab-import-btn').classList.toggle('active', tab === 'import');
+  document.getElementById('json-panel-export').classList.toggle('active', tab === 'export');
+  document.getElementById('json-panel-import').classList.toggle('active', tab === 'import');
+  if (tab === 'export') refreshExportPreview();
+}
+
+// ---------- EXPORT ----------
+function refreshExportPreview() {
+  const data = buildTemplateJson();
+  const pretty = JSON.stringify(data, null, 2);
+  const el = document.getElementById('json-export-code-block');
+  if (el) el.textContent = pretty;
+}
+
+async function copyJsonToClipboard() {
+  const data   = buildTemplateJson();
+  const pretty = JSON.stringify(data, null, 2);
+  try {
+    await navigator.clipboard.writeText(pretty);
+    toast('JSON copiado al portapapeles ✓', 'success');
+  } catch(e) {
+    // Fallback for environments without clipboard API
+    const ta = document.createElement('textarea');
+    ta.value = pretty;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('JSON copiado ✓', 'success');
+  }
+}
+
+function downloadJsonFile() {
+  const data     = buildTemplateJson();
+  const pretty   = JSON.stringify(data, null, 2);
+  const name     = (document.getElementById('tmpl-name')?.value.trim() || 'plantilla').replace(/[^a-z0-9_\-]/gi, '_');
+  const filename = `plantilla_${name}.json`;
+  const blob     = new Blob([pretty], { type: 'application/json' });
+  const url      = URL.createObjectURL(blob);
+  const a        = document.createElement('a');
+  a.href         = url;
+  a.download     = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast(`Archivo "${filename}" descargado ✓`, 'success');
+}
+
+// ---------- IMPORT FROM TEXT ----------
+function validateImportJson() {
+  const raw = document.getElementById('json-import-textarea').value;
+  const msgEl = document.getElementById('json-validation-msg');
+  const ta    = document.getElementById('json-import-textarea');
+  if (!raw.trim()) {
+    ta.classList.remove('error','ok');
+    msgEl.className = 'json-validation-msg';
+    msgEl.textContent = '';
+    return;
+  }
+  const result = validateTemplateJsonString(raw);
+  if (result.ok) {
+    ta.classList.remove('error'); ta.classList.add('ok');
+    msgEl.className = 'json-validation-msg ok';
+    msgEl.textContent = '✓ JSON válido — listo para aplicar';
+  } else {
+    ta.classList.remove('ok'); ta.classList.add('error');
+    msgEl.className = 'json-validation-msg error';
+    msgEl.textContent = `✗ ${result.error}`;
+  }
+}
+
+function applyImportFromText() {
+  const raw    = document.getElementById('json-import-textarea').value.trim();
+  const result = validateTemplateJsonString(raw);
+  if (!result.ok) {
+    toast(result.error, 'error');
+    return;
+  }
+  applyTemplateJson(result.data);
+  closeModal('modal-json-io');
+  toast('Plantilla importada ✓', 'success');
+}
+
+// ---------- IMPORT FROM FILE ----------
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('file-drop-zone').classList.add('drag-over');
+}
+function handleDragLeave(e) {
+  document.getElementById('file-drop-zone').classList.remove('drag-over');
+}
+function handleFileDrop(e) {
+  e.preventDefault();
+  document.getElementById('file-drop-zone').classList.remove('drag-over');
+  const file = e.dataTransfer?.files?.[0];
+  if (file) processJsonFile(file);
+}
+function handleFileSelect(e) {
+  const file = e.target.files?.[0];
+  if (file) processJsonFile(file);
+}
+
+function processJsonFile(file) {
+  const msgEl = document.getElementById('json-file-validation-msg');
+  const applyBtn = document.getElementById('btn-apply-file-import');
+  pendingFileJson = null;
+  applyBtn.disabled = true;
+
+  if (!file.name.endsWith('.json') && file.type !== 'application/json') {
+    msgEl.className = 'json-validation-msg error';
+    msgEl.textContent = '✗ Solo se aceptan archivos .json';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const raw = ev.target.result;
+    const result = validateTemplateJsonString(raw);
+    if (result.ok) {
+      pendingFileJson = result.data;
+      applyBtn.disabled = false;
+      msgEl.className = 'json-validation-msg ok';
+      msgEl.textContent = `✓ Archivo válido: "${file.name}" — listo para aplicar`;
+      // Update the drop zone label
+      const dz = document.getElementById('file-drop-zone');
+      dz.querySelector('p').textContent = `📄 ${file.name}`;
+    } else {
+      msgEl.className = 'json-validation-msg error';
+      msgEl.textContent = `✗ ${result.error}`;
+    }
+  };
+  reader.onerror = () => {
+    msgEl.className = 'json-validation-msg error';
+    msgEl.textContent = '✗ Error al leer el archivo.';
+  };
+  reader.readAsText(file);
+}
+
+function applyImportFromFile() {
+  if (!pendingFileJson) { toast('No hay archivo válido cargado', 'error'); return; }
+  applyTemplateJson(pendingFileJson);
+  pendingFileJson = null;
+  document.getElementById('btn-apply-file-import').disabled = true;
+  document.getElementById('json-file-validation-msg').className = 'json-validation-msg';
+  document.getElementById('json-file-validation-msg').textContent = '';
+  const dz = document.getElementById('file-drop-zone');
+  dz.querySelector('p').textContent = 'Arrastrá tu archivo aquí o tocá para elegir';
+  document.getElementById('json-file-input').value = '';
+  closeModal('modal-json-io');
+  toast('Plantilla importada desde archivo ✓', 'success');
+}
+
+// ============================================================
 // TEMPLATE SEND VIEW
 // ============================================================
 function showTemplateView() {
@@ -2262,7 +2746,7 @@ function hideWALoading() {
 }
 
 // ============================================================
-// SEND TEMPLATE TO CLIENT — with loading screen + repeat-send warning
+// SEND TEMPLATE TO CLIENT
 // ============================================================
 async function sendTemplateToClient(clientId) {
   if (isSendingWA) return;
@@ -2270,7 +2754,6 @@ async function sendTemplateToClient(clientId) {
   const c = clients.find(x => x['ID_Cliente'] === clientId);
   if (!c) return;
 
-  // Check if already sent today → warn
   const today   = new Date().toISOString().split('T')[0];
   const lastCom = c['Fecha_de_ultima_Comunicacion'] || c['Fecha de ultima Cominicacion'];
   const sentAlready = (lastCom && String(lastCom).startsWith(today)) || activeTemplate?.sentToday?.includes(clientId);
@@ -2322,7 +2805,6 @@ async function sendTemplateToClient(clientId) {
     renderCupones();
   }
 
-  // Resolve message
   let msg = tmpl.message;
   msg = msg.replace(/&nombre&/gi,   c['Nombre_apellido']||c['Nombre / apellido']||'');
   msg = msg.replace(/&localidad&/gi, canonicalLoc(c['Localidad'])||'');
@@ -2330,7 +2812,6 @@ async function sendTemplateToClient(clientId) {
   msg = msg.replace(/&cupon&/gi,    cuponCode);
   msg = resolveCustomVars(msg);
 
-  // Update contact history
   let notasCom = [];
   try { const raw = c['Notas_de_comunicacion']||c['Notas de comunicacion']; notasCom = typeof raw==='string' ? JSON.parse(raw) : (raw||[]); } catch(e){ notasCom=[]; }
   notasCom.push({ 'Fecha': today, 'Descripcion': msg.slice(0,120), 'Plantilla': tmpl.name });
@@ -2379,14 +2860,28 @@ function openModal(id) {
   if (id === 'modal-redeem')   filterRedeemList();
   if (id === 'modal-template') { renderPoolPicker(); renderCustomVars(); }
 
+  if (id === 'modal-json-io') {
+    // Refresh export preview whenever modal opens on export tab
+    const exportPanel = document.getElementById('json-panel-export');
+    if (exportPanel.classList.contains('active')) refreshExportPreview();
+    // Reset file import state
+    pendingFileJson = null;
+    const applyBtn = document.getElementById('btn-apply-file-import');
+    if (applyBtn) applyBtn.disabled = true;
+    const fmsg = document.getElementById('json-file-validation-msg');
+    if (fmsg) { fmsg.className = 'json-validation-msg'; fmsg.textContent = ''; }
+    const fi = document.getElementById('json-file-input');
+    if (fi) fi.value = '';
+    const dz = document.getElementById('file-drop-zone');
+    if (dz) { const p = dz.querySelector('p'); if (p) p.textContent = 'Arrastrá tu archivo aquí o tocá para elegir'; }
+  }
+
   if (id === 'modal-add-cupons') {
-    // Reset state
     bulkCodes = []; renderBulkTags();
     document.getElementById('bulk-input').value = '';
     generatedPreviewCodes = [];
     const prev = document.getElementById('gen-preview');
     if (prev) prev.style.display = 'none';
-    // Re-enable all save buttons
     [['btn-save-bulk','Agregar Cupones'],['btn-save-generate','Generar y Guardar'],['btn-save-single','Agregar Cupón']].forEach(([bid, label]) => {
       const b = document.getElementById(bid);
       if (b) { b.disabled = false; b.classList.remove('btn-loading'); b.textContent = label; }
@@ -2402,7 +2897,6 @@ function openModal(id) {
       const smOpt = Array.from(locSel.options).find(o => normalizeLoc(o.value).includes('san miguel'));
       if (smOpt) locSel.value = smOpt.value;
     }
-    // Re-enable save button
     const btn = document.getElementById('btn-save-client');
     if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); btn.textContent = 'Guardar Cliente'; }
     isSavingClient = false;
